@@ -12117,11 +12117,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Development\\church-app-aspnetcore-vuejs\\ChurchApp\\ChurchAppAPI\\ChurchAppAPI.csproj",
+      "projectUniqueName": "C:\\Development\\churchApp_aspnetcore_vuejs\\ChurchApp\\ChurchAppAPI\\ChurchAppAPI.csproj",
       "projectName": "ChurchAppAPI",
-      "projectPath": "C:\\Development\\church-app-aspnetcore-vuejs\\ChurchApp\\ChurchAppAPI\\ChurchAppAPI.csproj",
+      "projectPath": "C:\\Development\\churchApp_aspnetcore_vuejs\\ChurchApp\\ChurchAppAPI\\ChurchAppAPI.csproj",
       "packagesPath": "C:\\Users\\levj1\\.nuget\\packages\\",
-      "outputPath": "C:\\Development\\church-app-aspnetcore-vuejs\\ChurchApp\\ChurchAppAPI\\obj\\",
+      "outputPath": "C:\\Development\\churchApp_aspnetcore_vuejs\\ChurchApp\\ChurchAppAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

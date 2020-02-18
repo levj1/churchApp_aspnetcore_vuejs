@@ -12,3 +12,17 @@ C:\Development\church-app-aspnetcore-vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netc
 C:\Development\church-app-aspnetcore-vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netcoreapp2.2\ChurchAppAPI.pdb
 C:\Development\church-app-aspnetcore-vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.dll
 C:\Development\church-app-aspnetcore-vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.pdb
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netcoreapp2.2\ChurchAppAPI.deps.json
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netcoreapp2.2\ChurchAppAPI.runtimeconfig.json
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netcoreapp2.2\ChurchAppAPI.runtimeconfig.dev.json
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netcoreapp2.2\ChurchAppAPI.dll
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netcoreapp2.2\ChurchAppAPI.pdb
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.csprojAssemblyReference.cache
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.csproj.CoreCompileInputs.cache
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.RazorAssemblyInfo.cache
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.RazorAssemblyInfo.cs
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.AssemblyInfoInputs.cache
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.AssemblyInfo.cs
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.RazorTargetAssemblyInfo.cache
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.dll
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.pdb
