@@ -1,4 +1,6 @@
-﻿using ChurchAppAPI.Entities;
+﻿using AutoMapper;
+using ChurchAppAPI.Entities;
+using ChurchAppAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,16 +14,22 @@ namespace ChurchAppAPI.Controllers
     public class PersonsController: ControllerBase
     {
         private ChurchAppContext _churchContext;
+        private IMapper _mapper;
 
-        public PersonsController(ChurchAppContext churchContext)
+        public PersonsController(ChurchAppContext churchContext,
+            IMapper mapper)
         {
             _churchContext = churchContext;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public ActionResult GetPersons()
         {
-            return Ok(_churchContext.Persons.ToList());
+            var persons = _churchContext.Persons.ToList();
+            var personDtos = _mapper.Map<List<PersonDto>>(persons);
+
+            return Ok(personDtos);
         }
     }
 }
