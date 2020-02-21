@@ -22,27 +22,26 @@ namespace ChurchAppAPI
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
-            hostingEnvironment = env;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
-        private IHostingEnvironment hostingEnvironment { get; }
+        private IHostingEnvironment _env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer(
-            //    Configuration.GetConnectionString("DefaultConnection")));
-            if (hostingEnvironment.IsProduction())
-            {
-                services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ServerConnection"),
-                    b => b.MigrationsAssembly("ChurchAppAPI")));
-            }
-            else
-            {
-                services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("ChurchAppAPI")));
-            }
+            services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer("Server=.; database=church-app;Trusted_Connection=true;"));
+            //if (_env.IsProduction())
+            //{
+            //    services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ServerConnection"),
+            //        b => b.MigrationsAssembly("ChurchAppAPI")));
+            //}
+            //else
+            //{
+            //    services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            //        b => b.MigrationsAssembly("ChurchAppAPI")));
+            //}
 
 
             services.AddDefaultIdentity<AppUser>()
@@ -61,9 +60,9 @@ namespace ChurchAppAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

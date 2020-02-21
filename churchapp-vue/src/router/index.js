@@ -23,6 +23,12 @@ const routes = [
     name: 'Giver',
     component: () => import('../views/giver/Giver.vue')
   }
+  ,
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../account/RegisterPage.vue')
+  }
 ]
 
 const router = new VueRouter({
