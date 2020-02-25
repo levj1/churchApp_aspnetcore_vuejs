@@ -16,6 +16,7 @@
       </router-link>
       <div v-if="getUser">
         <span class="mr-2">Hi {{getUser.userName}}</span>
+        <v-btn @click="logout"><router-link to="/">(Logout)</router-link></v-btn>
       </div>
     </v-app-bar>
 
@@ -42,6 +43,11 @@ export default {
 
   data: () => ({
     //
-  })
+  }),
+  methods: {
+    logout(){
+      this.$store.commit('logout');
+    }
+  }
 };
 </script>

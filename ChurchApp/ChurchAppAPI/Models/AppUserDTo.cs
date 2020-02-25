@@ -16,5 +16,11 @@ namespace ChurchAppAPI.Models
         public string Password { get; set; }
 
         public string Email { get; set; }
+
+        public bool IsAuthenticated { get; set; }
+
+        public List<string> UserClaims { get; set; }
+
+        public string BearerToken { get; set; }
     }
 }

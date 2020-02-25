@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 using AutoMapper;
 using ChurchAppAPI.Entities;
 using ChurchAppAPI.Extensions.Mapping;
+using ChurchAppAPI.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ChurchAppAPI
 {
@@ -31,6 +28,37 @@ namespace ChurchAppAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Get JWT Token settings from JwtSettings.json file
+            JwtSettings settings = GetJwtSettings();
+
+            // Register JWT as the authentication service
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "JwtBearer";
+                options.DefaultChallengeScheme = "JwtBearer";
+            })
+            .AddJwtBearer("JwtBearer", jwtBearerOptions =>
+            {
+                jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(settings.Key)),
+                    ValidateIssuer = true,
+                    ValidIssuer = settings.Issuer,
+
+                    ValidateAudience = true,
+                    ValidAudience = settings.Audience,
+
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromMinutes(settings.MinutesToExpiration)
+                };
+            });
+
+
+            services.AddSingleton<JwtSettings>(settings);
+
+
             services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer("Server=.; database=church-app;Trusted_Connection=true;"));
             //if (_env.IsProduction())
             //{
@@ -73,7 +101,21 @@ namespace ChurchAppAPI
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
+        }
+
+        public JwtSettings GetJwtSettings()
+        {
+            JwtSettings settings = new JwtSettings()
+            {
+                Key = Configuration["JwtSettings:Key"],
+                Audience = Configuration["JwtSettings:Audience"],
+                Issuer = Configuration["JwtSettings:Issuer"],
+                MinutesToExpiration = Convert.ToInt32(Configuration["JwtSettings:MinutesToExpiration"])
+            };
+
+            return settings;
         }
     }
 }

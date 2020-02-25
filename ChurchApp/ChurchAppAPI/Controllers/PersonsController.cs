@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ChurchAppAPI.Entities;
 using ChurchAppAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace ChurchAppAPI.Controllers
 {
     [Route("api/persons")]
     [ApiController]
+    [Authorize]
     public class PersonsController: ControllerBase
     {
         private ChurchAppContext _churchContext;

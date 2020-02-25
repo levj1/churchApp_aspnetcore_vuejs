@@ -4,10 +4,19 @@ import axios from 'axios';
 
 Vue.use(Vuex)
 
+function removeToken(){
+  localStorage.removeItem('token');
+}
+function setToken(token){
+  localStorage.setItem('token', token);
+}
 export default new Vuex.Store({
   state: {
     givers: [],
     currentUser: null,
+    loginErrorMessage: '',
+    isAuthenticated: false,
+    token: localStorage.getItem('token') || '',
   },
   mutations: {
     updateGivers(state, givers) {
@@ -15,7 +24,21 @@ export default new Vuex.Store({
     },
     updateCurrentUser(state, user) {
       state.currentUser = user;
-    }
+      if (user == null) {
+        state.isAuthenticated = true;
+      }
+    },
+    updateLoginError(state, message) {
+      state.loginErrorMessage = message;
+    },
+    logout(state) {
+      state.currentUser = null;
+      state.isAuthenticated = false;
+      removeToken();
+      axios.defaults.headers.common['Authorization'] = null
+      this.router('/');
+    },
+
 
   },
   actions: {
@@ -32,15 +55,19 @@ export default new Vuex.Store({
         })
         .catch(error => console.log('An error occured while created this user' + error));
     },
-    login({ commit }, user) {
-      axios.post('/api/accounts/login', user)
+    async login({ commit }, user) {
+      await axios.post('/api/accounts/login', user)
         .then(result => {
-          console.log(result.data);
           commit('updateCurrentUser', result.data);
-          console.log('login successful');
+          const token = result.data.bearerToken;
+          this.state.token = token;        
+          setToken(token);
+          // add headers to axiom for future call
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.token;
         }).catch(err => {
           commit('updateCurrentUser', null);
-          console.log(err);
+          commit('updateLoginError', err.message);
+          removeToken();
         });
     },
   },

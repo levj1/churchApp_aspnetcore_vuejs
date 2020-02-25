@@ -11,6 +11,11 @@
       </v-col>
     </v-row>
     <v-row class="text-center" v-if="getUser === null">
+      <v-col v-if="loginError !== ''">
+        <div>
+          <h3 class="error" width="200px">A error occured</h3>
+        </div>
+      </v-col>
       <v-col class="mb-5" cols="12">
         <h2 class="headline font-weight-bold mb-3">Log in</h2>
 
@@ -56,12 +61,22 @@ export default {
       password: ""
     },
     userNameRules: [v => !!v || "Username is required"],
-    passwordRules: [v => !!v || "Password is required"]
+    passwordRules: [v => !!v || "Password is required"],
+    loginError: ''
   }),
   methods: {
-    login() {
+    async login() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch("login", this.user);
+        await this.$store
+          .dispatch("login", this.user)
+          .then(res => {
+            console.log("success" + res.data);
+            this.loginError = '';
+          })
+          .catch(e => {
+            console.log(e);
+            this.loginError = 'An error occured while login';
+          });
       }
     }
   }

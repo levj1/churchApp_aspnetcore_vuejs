@@ -8,15 +8,30 @@
 </template>
 
 <script>
+// import store from '../store/index'; 
+
 export default {
     name: 'giver',
     created(){
         this.$store.dispatch('getGivers');
+        if(this.$store.state.currentUser == null){
+            this.$router.push('/');
+        }
     },
+    // beforeRouteUpdate: (to, from, next) => {
+    //     if(this.$store.state.currentUser !== null){
+    //         next(true);
+    //     }else{
+    //         next(false);
+    //     }
+    // },
     computed:{
         givers(){
             return this.$store.state.givers;
-        }
+        },
+        isLoggedIn(){
+            return this.$store.state.currentUser !== null
+        },
     },
     data(){
         return{
