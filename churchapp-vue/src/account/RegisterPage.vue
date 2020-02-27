@@ -1,12 +1,15 @@
 <template>
   <v-container>
+    <v-card width="600" class="mx-auto mt-5" flat="">
+
+    
     <v-row class="text-center">
       <v-col class="mb-4">
         <h1 class="display-2 font-weight-bold mb-3">Welcome to Church App</h1>
       </v-col>
 
       <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">Register</h2>
+        <h2 class="headline">Register</h2>
 
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field v-model="firstName" label="First Name" required :rules="firstNameRules"></v-text-field>
@@ -19,10 +22,11 @@
 
           <v-text-field v-model="password" type="password" label="Password"></v-text-field>
 
-          <v-btn class="mr-4" @click="register">Register</v-btn>
+          <v-btn class="info" @click="register">Register</v-btn>
         </v-form>
       </v-col>
     </v-row>
+    </v-card>
   </v-container>
 </template>
 

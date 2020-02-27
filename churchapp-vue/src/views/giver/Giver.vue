@@ -14,17 +14,7 @@ export default {
     name: 'giver',
     created(){
         this.$store.dispatch('getGivers');
-        if(this.$store.state.currentUser == null){
-            this.$router.push('/');
-        }
     },
-    // beforeRouteUpdate: (to, from, next) => {
-    //     if(this.$store.state.currentUser !== null){
-    //         next(true);
-    //     }else{
-    //         next(false);
-    //     }
-    // },
     computed:{
         givers(){
             return this.$store.state.givers;

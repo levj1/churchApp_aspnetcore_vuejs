@@ -59,17 +59,17 @@ namespace ChurchAppAPI
             services.AddSingleton<JwtSettings>(settings);
 
 
-            services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer("Server=.; database=church-app;Trusted_Connection=true;"));
-            //if (_env.IsProduction())
-            //{
-            //    services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ServerConnection"),
-            //        b => b.MigrationsAssembly("ChurchAppAPI")));
-            //}
-            //else
-            //{
-            //    services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-            //        b => b.MigrationsAssembly("ChurchAppAPI")));
-            //}
+            //services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer("Server=.; database=church-app;Trusted_Connection=true;"));
+            if (_env.IsProduction())
+            {
+                services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SmarterAspConnection"),
+                    b => b.MigrationsAssembly("ChurchAppAPI")));
+            }
+            else
+            {
+                services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly("ChurchAppAPI")));
+            }
 
 
             services.AddDefaultIdentity<AppUser>()

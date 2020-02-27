@@ -10,11 +10,11 @@ function removeToken(){
 function setToken(token){
   localStorage.setItem('token', token);
 }
-export default new Vuex.Store({
+
+const store = new Vuex.Store({
   state: {
     givers: [],
     currentUser: null,
-    loginErrorMessage: '',
     isAuthenticated: false,
     token: localStorage.getItem('token') || '',
   },
@@ -25,18 +25,15 @@ export default new Vuex.Store({
     updateCurrentUser(state, user) {
       state.currentUser = user;
       if (user == null) {
-        state.isAuthenticated = true;
+        state.isAuthenticated = false;
+        removeToken();
       }
-    },
-    updateLoginError(state, message) {
-      state.loginErrorMessage = message;
     },
     logout(state) {
       state.currentUser = null;
       state.isAuthenticated = false;
       removeToken();
       axios.defaults.headers.common['Authorization'] = null
-      this.router('/');
     },
 
 
@@ -45,32 +42,32 @@ export default new Vuex.Store({
     getGivers({ commit }) {
       axios.get('/api/persons')
         .then(result => commit('updateGivers', result.data))
-        .catch(console.error);
+        .catch()
+        ;
     },
     registerUser(context, user) {
       axios.post('/api/accounts/register', user)
-        .then(result => {
-          console.log(result.data);
-          console.log('user created successfully!')
-        })
-        .catch(error => console.log('An error occured while created this user' + error));
+        .then()
+        .catch();
     },
+    /*eslint no-unused-vars: "error"*/
     async login({ commit }, user) {
       await axios.post('/api/accounts/login', user)
         .then(result => {
           commit('updateCurrentUser', result.data);
           const token = result.data.bearerToken;
           this.state.token = token;        
+          this.state.isAuthenticated = true;        
           setToken(token);
           // add headers to axiom for future call
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.token;
-        }).catch(err => {
-          commit('updateCurrentUser', null);
-          commit('updateLoginError', err.message);
-          removeToken();
-        });
+        }).catch( 
+          commit('updateCurrentUser', null) 
+        );
     },
   },
   modules: {
   }
 })
+
+export default store;

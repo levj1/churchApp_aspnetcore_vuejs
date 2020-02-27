@@ -9,14 +9,13 @@
 
       <v-spacer></v-spacer>
 
-      <router-link to="/giver">
-        <v-btn text>
-          <span class="mr-2">Givers</span>
-        </v-btn>
+      <router-link to="/login" v-if="getUser == null"><v-btn text>Login</v-btn></router-link>
+      <router-link to="/giver" v-if="getUser">
+        <v-btn text>Givers</v-btn>
       </router-link>
       <div v-if="getUser">
         <span class="mr-2">Hi {{getUser.userName}}</span>
-        <v-btn @click="logout"><router-link to="/">(Logout)</router-link></v-btn>
+        <v-btn text @click="logout">(Logout)</v-btn>
       </div>
     </v-app-bar>
 
@@ -27,13 +26,13 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld';
 
 export default {
   name: "App",
+  created(){
+  },
   computed: {
     getUser(){
-      console.log('user: ' + this.$store.state.currentUser);
       return this.$store.state.currentUser;
     }
   },
@@ -47,6 +46,7 @@ export default {
   methods: {
     logout(){
       this.$store.commit('logout');
+      this.$router.push({ name : 'Home'});
     }
   }
 };
