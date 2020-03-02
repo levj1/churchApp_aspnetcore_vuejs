@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using ChurchAppAPI.Entities;
 using ChurchAppAPI.Models;
+using ChurchAppAPI.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,28 +12,38 @@ using System.Threading.Tasks;
 
 namespace ChurchAppAPI.Controllers
 {
+    [EnableCors("CorsPolicy")]
     [Route("api/persons")]
     [ApiController]
     [Authorize]
     public class PersonsController: ControllerBase
     {
-        private ChurchAppContext _churchContext;
+        private IPersonRepository _personRepository;
         private IMapper _mapper;
 
-        public PersonsController(ChurchAppContext churchContext,
+        public PersonsController(IPersonRepository personRepository,
             IMapper mapper)
         {
-            _churchContext = churchContext;
+            _personRepository = personRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
         public ActionResult GetPersons()
         {
-            var persons = _churchContext.Persons.ToList();
+            var persons = _personRepository.GetPeople();
             var personDtos = _mapper.Map<List<PersonDto>>(persons);
 
             return Ok(personDtos);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult GetPerson(int id)
+        {
+            var person = _personRepository.GetPerson(id);
+            if (person == null) { return NotFound(); }
+
+            return Ok(person);
         }
     }
 }

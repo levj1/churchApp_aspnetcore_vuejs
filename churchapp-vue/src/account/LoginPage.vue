@@ -30,7 +30,7 @@
     <v-card-actions>
       <v-btn color="success" @click="register">Register</v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="info" @click="login">Login</v-btn>
+      <v-btn color="info" @click="login" ref="login">Login</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -38,9 +38,8 @@
 <script>
 export default {
   name: "LoginPage",
-  // created(){
-  //   this.user = this.$store.state.user;
-  // },
+  created(){
+  },
   computed: {
     getUser() {
       return this.$store.state.currentUser;

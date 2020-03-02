@@ -4,6 +4,7 @@ using AutoMapper;
 using ChurchAppAPI.Entities;
 using ChurchAppAPI.Extensions.Mapping;
 using ChurchAppAPI.Models;
+using ChurchAppAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +59,15 @@ namespace ChurchAppAPI
 
             services.AddSingleton<JwtSettings>(settings);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
 
             //services.AddDbContext<ChurchAppContext>(options => options.UseSqlServer("Server=.; database=church-app;Trusted_Connection=true;"));
             if (_env.IsProduction())
@@ -74,6 +84,7 @@ namespace ChurchAppAPI
 
             services.AddDefaultIdentity<AppUser>()
                 .AddEntityFrameworkStores<ChurchAppContext>();
+            services.AddTransient<IPersonRepository, PersonRepository>();
 
             // Auto Mapper configuration
             var mappingConfig = new MapperConfiguration(mc =>
@@ -101,6 +112,7 @@ namespace ChurchAppAPI
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseMvc();
         }

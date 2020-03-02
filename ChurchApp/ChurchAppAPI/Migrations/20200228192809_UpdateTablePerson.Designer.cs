@@ -4,62 +4,22 @@ using ChurchAppAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChurchAppAPI.Migrations
 {
     [DbContext(typeof(ChurchAppContext))]
-    partial class ChurchAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200228192809_UpdateTablePerson")]
+    partial class UpdateTablePerson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ChurchAppAPI.Entities.Address", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("City");
-
-                    b.Property<int>("PersonID");
-
-                    b.Property<string>("State");
-
-                    b.Property<string>("StreetLine1");
-
-                    b.Property<string>("StreetLine2");
-
-                    b.Property<int?>("TypeID");
-
-                    b.Property<string>("Zipcode");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PersonID");
-
-                    b.HasIndex("TypeID");
-
-                    b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("ChurchAppAPI.Entities.AddressType", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("AddressType");
-                });
 
             modelBuilder.Entity("ChurchAppAPI.Entities.AppUser", b =>
                 {
@@ -114,40 +74,6 @@ namespace ChurchAppAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("ChurchAppAPI.Entities.Donation", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Amount");
-
-                    b.Property<DateTime>("DonationDate");
-
-                    b.Property<int>("PersonID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PersonID");
-
-                    b.ToTable("Donations");
-                });
-
-            modelBuilder.Entity("ChurchAppAPI.Entities.DonationType", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Type");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("DonationTypes");
                 });
 
             modelBuilder.Entity("ChurchAppAPI.Entities.Person", b =>
@@ -279,26 +205,6 @@ namespace ChurchAppAPI.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("ChurchAppAPI.Entities.Address", b =>
-                {
-                    b.HasOne("ChurchAppAPI.Entities.Person", "Person")
-                        .WithMany("Addresses")
-                        .HasForeignKey("PersonID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ChurchAppAPI.Entities.AddressType", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeID");
-                });
-
-            modelBuilder.Entity("ChurchAppAPI.Entities.Donation", b =>
-                {
-                    b.HasOne("ChurchAppAPI.Entities.Person", "Person")
-                        .WithMany("Donations")
-                        .HasForeignKey("PersonID")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

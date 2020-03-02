@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios';
+import config from '../config';
 
 Vue.use(Vuex)
 
@@ -40,7 +41,7 @@ const store = new Vuex.Store({
   },
   actions: {
     getGivers({ commit }) {
-      axios.get('/api/persons')
+      axios.get(config.BASE_URL + '/api/persons')
         .then(result => commit('updateGivers', result.data))
         .catch()
         ;
