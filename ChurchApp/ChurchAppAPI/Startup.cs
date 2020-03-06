@@ -3,6 +3,7 @@ using System.Text;
 using AutoMapper;
 using ChurchAppAPI.Entities;
 using ChurchAppAPI.Extensions.Mapping;
+using ChurchAppAPI.Extensions.Seed;
 using ChurchAppAPI.Models;
 using ChurchAppAPI.Services;
 using Microsoft.AspNetCore.Builder;
@@ -94,12 +95,13 @@ namespace ChurchAppAPI
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, ChurchAppContext churchAppContext)
         {
             if (_env.IsDevelopment())
             {
@@ -111,6 +113,8 @@ namespace ChurchAppAPI
                 app.UseHsts();
             }
 
+            AddressTypeSeed.EnsureSeedDataForContext(churchAppContext);
+            DonationTypeSeed.EnsureSeedDataForContext(churchAppContext);
             app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
             app.UseAuthentication();

@@ -16,7 +16,7 @@ namespace ChurchAppAPI.Controllers
     [Route("api/persons")]
     [ApiController]
     [Authorize]
-    public class PersonsController: ControllerBase
+    public class PersonsController : ControllerBase
     {
         private IPersonRepository _personRepository;
         private IMapper _mapper;
@@ -43,7 +43,43 @@ namespace ChurchAppAPI.Controllers
             var person = _personRepository.GetPerson(id);
             if (person == null) { return NotFound(); }
 
+            var personDto = _mapper.Map<PersonDto>(person);
+
             return Ok(person);
+        }
+
+        [HttpPost]
+        public ActionResult Post([FromBody] PersonDto personDto)
+        {
+            if (string.IsNullOrEmpty(personDto.FirstName) || string.IsNullOrEmpty(personDto.LastName))
+            {
+                return StatusCode(500, "First and Last Name required");
+            }
+
+            var personEntity = _mapper.Map<Person>(personDto);
+
+            _personRepository.Add(personEntity);
+            if (!_personRepository.Save())
+            {
+                return StatusCode(500, "An error occured while making the change");
+            }
+
+            return CreatedAtAction("Post", new { id = personEntity.ID }, personEntity);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var personInDb = _personRepository.GetPerson(id);
+            if(personInDb == null) { return NotFound(); }
+
+            _personRepository.Delete(personInDb);
+            if (!_personRepository.Save())
+            {
+                return StatusCode(500, "An error occured while processing your request");
+            }
+
+            return NoContent();
         }
     }
 }

@@ -27,7 +27,18 @@ const routes = [
       if (!store.state.isAuthenticated) {
         next({ name: 'Login' });
       } else { next() }
-    }
+    },
+  },
+  {
+    path: '/giver/:id',
+    name: 'EditGiver',
+    component: () => import('../views/giver/EditGiver.vue'),
+    // props: true,
+    beforeEnter(to, from, next) {
+      if (!store.state.isAuthenticated) {
+        next({ name: 'Login' });
+      } else { next() }
+    },
   }
   ,
   {

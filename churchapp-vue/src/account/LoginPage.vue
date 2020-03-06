@@ -1,7 +1,7 @@
 <template>
   <v-card width="400px" class="mx-auto mt-5" v-if="getUser == null">
     <v-list-item v-if="hasErrorLogin">
-      <v-list-item-title class="headline text-center">{{errorMessage}}</v-list-item-title>
+      <v-list-item-title class="headline text-center error">{{errorMessage}}</v-list-item-title>
     </v-list-item>
     <v-card-title class="pb-0">
       <h1>Login</h1>
@@ -38,8 +38,7 @@
 <script>
 export default {
   name: "LoginPage",
-  created(){
-  },
+  created() {},
   computed: {
     getUser() {
       return this.$store.state.currentUser;
@@ -64,13 +63,14 @@ export default {
       if (this.$refs.form.validate()) {
         await this.$store
           .dispatch("login", this.user)
-          .then( this.$router.push("/"))
+          .then(res => {
+            this.$router.push("/");
+          })
           .catch(e => {
             console.log(e);
             this.hasErrorLogin = true;
-            this.errorMessage = "Invalid user/password, please try again.";
-          })
-          ;
+            this.errorMessage = "Invalid user/password, try again.";
+          });
       }
     }
   }

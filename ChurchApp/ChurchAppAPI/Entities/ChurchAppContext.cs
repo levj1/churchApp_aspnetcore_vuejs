@@ -18,5 +18,6 @@ namespace ChurchAppAPI.Entities
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<DonationType> DonationTypes { get; set; }
+        public object DonationType { get; internal set; }
     }
 }

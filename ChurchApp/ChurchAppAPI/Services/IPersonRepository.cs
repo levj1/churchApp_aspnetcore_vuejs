@@ -11,5 +11,16 @@ namespace ChurchAppAPI.Services
         IEnumerable<Person> GetPeople();
 
         Person GetPerson(int id);
+
+        void Add(Person person);
+
+        void Update(Person person);
+
+        void Patch(Person person);
+
+        bool Save();
+
+        void Delete(Person person);
+
     }
 }

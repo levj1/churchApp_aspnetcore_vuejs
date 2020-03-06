@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChurchAppAPI.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,5 +19,7 @@ namespace ChurchAppAPI.Models
                 return $"{FirstName} {LastName}";
             }
         }
+
+        public List<Address> Addresses { get; set; }
     }
 }
