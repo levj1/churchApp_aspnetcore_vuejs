@@ -9,7 +9,8 @@ namespace ChurchAppAPI.Entities
     {
         public int ID { get; set; }
 
-        public AddressType Type { get; set; }
+        public int AddressTypeId { get; set; }
+        public AddressType AddressType { get; set; }
 
         public string StreetLine1 { get; set; }
 

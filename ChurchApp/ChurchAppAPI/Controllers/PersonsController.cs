@@ -15,7 +15,7 @@ namespace ChurchAppAPI.Controllers
     [EnableCors("CorsPolicy")]
     [Route("api/persons")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class PersonsController : ControllerBase
     {
         private IPersonRepository _personRepository;
@@ -29,32 +29,32 @@ namespace ChurchAppAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetPersons()
+        public ActionResult GetPersons([FromQuery] bool includeAddress = false)
         {
-            var persons = _personRepository.GetPeople();
+            var persons = _personRepository.GetPeople(includeAddress);
             var personDtos = _mapper.Map<List<PersonDto>>(persons);
 
             return Ok(personDtos);
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetPerson(int id)
+        public ActionResult GetPerson(int id, [FromQuery] bool includeAddress = false)
         {
-            var person = _personRepository.GetPerson(id);
+            var person = _personRepository.GetPerson(id, includeAddress);
             if (person == null) { return NotFound(); }
 
             var personDto = _mapper.Map<PersonDto>(person);
 
-            return Ok(person);
+            return Ok(personDto);
         }
 
         [HttpPost]
         public ActionResult Post([FromBody] PersonDto personDto)
         {
-            if (string.IsNullOrEmpty(personDto.FirstName) || string.IsNullOrEmpty(personDto.LastName))
+            if (!ModelState.IsValid)
             {
-                return StatusCode(500, "First and Last Name required");
-            }
+                return BadRequest();
+            }        
 
             var personEntity = _mapper.Map<Person>(personDto);
 
@@ -67,13 +67,38 @@ namespace ChurchAppAPI.Controllers
             return CreatedAtAction("Post", new { id = personEntity.ID }, personEntity);
         }
 
+        [HttpPut]
+        public IActionResult Update([FromBody]PersonDto person)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var personInDb = _personRepository.GetPerson(person.ID, true);
+            if(personInDb == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(person, personInDb);
+
+            if (!_personRepository.Save())
+            {
+                return StatusCode(500, "An error occured while processing request.");
+            }
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var personInDb = _personRepository.GetPerson(id);
+            var personInDb = _personRepository.GetPerson(id, false);
             if(personInDb == null) { return NotFound(); }
 
             _personRepository.Delete(personInDb);
+
             if (!_personRepository.Save())
             {
                 return StatusCode(500, "An error occured while processing your request");

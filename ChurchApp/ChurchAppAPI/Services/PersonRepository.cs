@@ -14,15 +14,32 @@ namespace ChurchAppAPI.Services
         {
             _context = context;
         }
-        public IEnumerable<Person> GetPeople()
+        public IEnumerable<Person> GetPeople(bool includeAddress)
         {
-            var people = _context.Persons.ToList();
+            List<Person> people;
+            if (includeAddress)
+            {
+                return _context.Persons
+                    .Include("Addresses.AddressType")
+                    .ToList();
+            }
+            people = _context.Persons.ToList();
+            
             return people;
         }
 
-        public Person GetPerson(int id)
+        public Person GetPerson(int id, bool includeAddress)
         {
-            var person = _context.Persons.Where(x => x.ID == id).Include(x => x.Addresses).FirstOrDefault();
+            Person person = _context.Persons
+                .Where(x => x.ID == id)
+                .FirstOrDefault();
+            if (includeAddress)
+            {
+                person = _context.Persons
+                .Where(x => x.ID == id)
+                .Include("Addresses.AddressType")
+                .FirstOrDefault();
+            }
             return person;
         }
 

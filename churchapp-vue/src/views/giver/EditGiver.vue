@@ -33,25 +33,38 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email*" v-model="person.email"></v-text-field>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="12" md="12" v-if="person.addresses.length == 0">
+                <v-checkbox v-model="addAddress" :label=" `Add address`"></v-checkbox>
               </v-col>
-
-              <!-- <v-row v-if="!person.addresses.length">
+              <v-row v-for="address in person.addresses" :key="address.Id">
                 <v-col cols="12" md="12">
                   <h3>Address(es)</h3>
-                  <v-divider></v-divider>
+                </v-col>
+
+                <v-divider></v-divider>
+                <v-col cols="12" sm="12" md="12">
+                  <v-text-field label="Address Line 1"
+                  :rules="streetLine1Rules"
+                   v-model="address.streetLine1"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12" md="12">
+                  <v-text-field label="Address Line 2" v-model="address.streetLine2"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="person.addresses[0].streetLine1"></v-text-field>
+                  <v-text-field label="City"
+                  :rules="cityRules" v-model="address.city"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="person.addresses[0].streetLine2"></v-text-field>
+                  <v-text-field label="State"
+                  :rules="stateRules" v-model="address.state"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="person.addresses[0].city"></v-text-field>
+                  <v-text-field label="Zipcode"
+                  :rules="zipcodeRules" v-model="address.zipcode"></v-text-field>
                 </v-col>
-              </v-row>-->
+              </v-row>
               <v-col cols="12" sm="12">
                 <v-btn color="primary" @click="addOrEdit()">
                   <span v-if="id > 0">Edit</span>
@@ -80,7 +93,7 @@ export default {
         .then(res => {
           if (res && res.data) {
             this.person = res.data;
-            console.log(this.person);
+            console.log("updated");
           }
         })
         .catch();
@@ -88,6 +101,7 @@ export default {
   },
   data: () => ({
     valid: true,
+    addAddress: false,
     id: 0,
     person: {
       firstName: "",
@@ -96,7 +110,11 @@ export default {
       addresses: []
     },
     firstNameRules: [v => !!v || "First Name is required"],
-    lastNameRules: [v => !!v || "Middle Name is required"]
+    lastNameRules: [v => !!v || "Middle Name is required"],
+    streetLine1Rules: [v => !!v || "Street Line 1 is Required"],
+    cityRules: [v => !!v || "City is Required"],
+    stateRules: [v => !!v || "State is Required"],
+    zipcodeRules: [v => !!v || "Zipcode is Required"],
   }),
   methods: {
     addOrEdit() {
@@ -106,7 +124,17 @@ export default {
           this.$store
             .dispatch("createGiver", JSON.stringify(this.person))
             .then(res => {
-              alert("You have succesfully add this person");
+              alert("You have succesfully added this person");
+              this.$router.push("/giver");
+            })
+            .catch(err => {
+              alert("An error occured");
+            });
+        } else {
+          this.$store
+            .dispatch("editGiver", JSON.stringify(this.person))
+            .then(res => {
+              alert("You have succesfully edited this person");
               this.$router.push("/giver");
             })
             .catch(err => {

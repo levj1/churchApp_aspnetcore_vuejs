@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using ChurchAppAPI.Entities;
 using ChurchAppAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChurchAppAPI.Extensions.Mapping
 {
@@ -17,6 +13,16 @@ namespace ChurchAppAPI.Extensions.Mapping
 
             CreateMap<Person, PersonDto>();
             CreateMap<PersonDto, Person>();
+
+            CreateMap<Address, AddressDto>();
+            CreateMap<AddressDto, Address>();
+
+            CreateMap<AddressType, AddressTypeDto>();
+            CreateMap<AddressTypeDto, AddressType>();
+
+            CreateMap<DonationTypeDto, DonationType>();
+            CreateMap<DonationType, DonationTypeDto>();
+
         }
     }
 }

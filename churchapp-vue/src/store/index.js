@@ -47,10 +47,10 @@ const store = new Vuex.Store({
         ;
     },
     getGiver(context, id) {
-      return axios.get(config.BASE_URL + '/api/persons/' + id);
+      return axios.get(config.BASE_URL + '/api/persons/' + id + '?includeAddress=true');
     },
     createGiver(context, person) {
-     return axios.post(config.BASE_URL + '/api/persons',
+      return axios.post(config.BASE_URL + '/api/persons',
         person,
         {
           headers: {
@@ -59,14 +59,24 @@ const store = new Vuex.Store({
           }
         })
     },
-    deleteGiver(context, id){
+    editGiver(context, person) {
+      return axios.put(config.BASE_URL + '/api/persons',
+        person,
+        {
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json'
+          }
+        })
+    },
+    deleteGiver(context, id) {
       return axios.delete(config.BASE_URL + '/api/persons/' + id),
-      {
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Content-Type': 'application/json'
-        }
-      };
+        {
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json'
+          }
+        };
     },
     registerUser(context, user) {
       axios.post('/api/accounts/register', user)

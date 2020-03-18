@@ -4,14 +4,16 @@ using ChurchAppAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChurchAppAPI.Migrations
 {
     [DbContext(typeof(ChurchAppContext))]
-    partial class ChurchAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200316175250_addAddressType")]
+    partial class addAddressType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,8 +27,6 @@ namespace ChurchAppAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AddressTypeId");
-
                     b.Property<string>("City");
 
                     b.Property<int>("PersonID");
@@ -37,13 +37,15 @@ namespace ChurchAppAPI.Migrations
 
                     b.Property<string>("StreetLine2");
 
+                    b.Property<int?>("TypeID");
+
                     b.Property<string>("Zipcode");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("AddressTypeId");
-
                     b.HasIndex("PersonID");
+
+                    b.HasIndex("TypeID");
 
                     b.ToTable("Addresses");
                 });
@@ -283,15 +285,14 @@ namespace ChurchAppAPI.Migrations
 
             modelBuilder.Entity("ChurchAppAPI.Entities.Address", b =>
                 {
-                    b.HasOne("ChurchAppAPI.Entities.AddressType", "AddressType")
-                        .WithMany()
-                        .HasForeignKey("AddressTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("ChurchAppAPI.Entities.Person", "Person")
                         .WithMany("Addresses")
                         .HasForeignKey("PersonID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ChurchAppAPI.Entities.AddressType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeID");
                 });
 
             modelBuilder.Entity("ChurchAppAPI.Entities.Donation", b =>
