@@ -13,4 +13,11 @@ namespace ChurchAppAPI.Models
         [Required(ErrorMessage = "Address Type is required.")]
         public string Name { get; set; }
     }
+
+    public class AddressTypeWithoutIdDto
+    {
+
+        [Required(ErrorMessage = "Address Type is required.")]
+        public string Name { get; set; }
+    }
 }

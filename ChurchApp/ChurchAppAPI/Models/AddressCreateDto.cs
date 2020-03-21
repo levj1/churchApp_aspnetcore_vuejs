@@ -1,35 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChurchAppAPI.Entities
+namespace ChurchAppAPI.Models
 {
-    public class Address
+    public class AddressCreateDto
     {
-        [Key]
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
         public int AddressTypeId { get; set; }
-        public AddressType AddressType { get; set; }
 
+        [Required(ErrorMessage = "Address street is required.")]
         public string StreetLine1 { get; set; }
 
         public string StreetLine2 { get; set; }
 
+        [Required(ErrorMessage = "City is required.")]
         public string City { get; set; }
+
+
+        [Required(ErrorMessage = "State is required.")]
 
         public string State { get; set; }
 
+
+        [Required(ErrorMessage = "Zipcode street is required.")]
         public string Zipcode { get; set; }
 
         public int PersonID { get; set; }
-
-        public Person Person { get; set; }
 
     }
 }

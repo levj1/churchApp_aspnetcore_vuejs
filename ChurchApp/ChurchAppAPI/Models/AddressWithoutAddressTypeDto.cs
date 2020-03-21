@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChurchAppAPI.Models
 {
-    public class AddressDto
+    public class AddressWithoutAddressTypeDto
     {
         public int ID { get; set; }
-
-        public AddressTypeDto AddressType { get; set; }
 
         [Required(ErrorMessage = "Address street is required.")]
         public string StreetLine1 { get; set; }
@@ -28,7 +26,5 @@ namespace ChurchAppAPI.Models
 
         [Required(ErrorMessage = "Zipcode street is required.")]
         public string Zipcode { get; set; }
-
-
     }
 }

@@ -19,12 +19,15 @@ namespace ChurchAppAPI.Controllers
     public class PersonsController : ControllerBase
     {
         private IPersonRepository _personRepository;
+        private IAddressRepository _addressRepository;
         private IMapper _mapper;
 
         public PersonsController(IPersonRepository personRepository,
+            IAddressRepository addressRepository,
             IMapper mapper)
         {
             _personRepository = personRepository;
+            _addressRepository = addressRepository;
             _mapper = mapper;
         }
 
@@ -68,14 +71,14 @@ namespace ChurchAppAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody]PersonDto person)
+        public IActionResult Update([FromBody]PersonWithoutAddressDto person)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
-            }
+            }   
 
-            var personInDb = _personRepository.GetPerson(person.ID, true);
+            var personInDb = _personRepository.GetPerson(person.ID, false);
             if(personInDb == null)
             {
                 return NotFound();
@@ -86,7 +89,7 @@ namespace ChurchAppAPI.Controllers
             if (!_personRepository.Save())
             {
                 return StatusCode(500, "An error occured while processing request.");
-            }
+            }                     
 
             return NoContent();
         }

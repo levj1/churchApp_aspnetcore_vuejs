@@ -28,7 +28,7 @@ namespace ChurchAppAPI.Services
             return people;
         }
 
-        public Person GetPerson(int id, bool includeAddress)
+        public Person GetPerson(int id, bool includeAddress = false)
         {
             Person person = _context.Persons
                 .Where(x => x.ID == id)
@@ -55,7 +55,7 @@ namespace ChurchAppAPI.Services
 
         public void Update(Person person)
         {
-            throw new NotImplementedException();
+            _context.Update(person);
         }
 
         public void Patch(Person person)

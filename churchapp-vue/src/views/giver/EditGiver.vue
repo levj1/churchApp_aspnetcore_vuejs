@@ -36,7 +36,8 @@
             </v-row>
             <v-row>
               <v-col cols="12" sm="12" md="12" v-if="person.addresses.length == 0">
-                <v-checkbox v-model="addAddress" :label=" `Add address`"></v-checkbox>
+                <v-checkbox v-model="addAddress" :label=" `Add address`"
+                v-on:change="addAddress = !addAddress"></v-checkbox>
               </v-col>
               <v-row v-for="address in person.addresses" :key="address.Id">
                 <v-col cols="12" md="12">
@@ -44,6 +45,29 @@
                 </v-col>
 
                 <v-divider></v-divider>
+                <v-col cols="12" sm="12" md="12">
+                  <v-text-field label="Address Line 1"
+                  :rules="streetLine1Rules"
+                   v-model="address.streetLine1"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12" md="12">
+                  <v-text-field label="Address Line 2" v-model="address.streetLine2"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field label="City"
+                  :rules="cityRules" v-model="address.city"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field label="State"
+                  :rules="stateRules" v-model="address.state"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field label="Zipcode"
+                  :rules="zipcodeRules" v-model="address.zipcode"></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row v-if="addAddress">
                 <v-col cols="12" sm="12" md="12">
                   <v-text-field label="Address Line 1"
                   :rules="streetLine1Rules"
@@ -119,7 +143,6 @@ export default {
   methods: {
     addOrEdit() {
       if (this.$refs.form.validate()) {
-        // Create
         if (this.id == 0) {
           this.$store
             .dispatch("createGiver", JSON.stringify(this.person))
@@ -134,7 +157,7 @@ export default {
           this.$store
             .dispatch("editGiver", JSON.stringify(this.person))
             .then(res => {
-              alert("You have succesfully edited this person");
+              alert("Changed successfully saved");
               this.$router.push("/giver");
             })
             .catch(err => {
@@ -142,6 +165,9 @@ export default {
             });
         }
       }
+    },
+    addNewAddress(){
+      this.addAddress = true;
     }
   }
 };

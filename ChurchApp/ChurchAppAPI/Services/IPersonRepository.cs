@@ -10,7 +10,7 @@ namespace ChurchAppAPI.Services
     {
         IEnumerable<Person> GetPeople(bool includeAddress);
 
-        Person GetPerson(int id, bool includeAddress);
+        Person GetPerson(int id, bool includeAddress = false);
 
         void Add(Person person);
 
