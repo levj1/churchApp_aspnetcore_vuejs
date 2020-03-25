@@ -14,9 +14,23 @@ namespace ChurchAppAPI.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
+        [Range(0.01, double.MaxValue, ErrorMessage = "Please enter a value greater than 0")]
         public decimal Amount { get; set; }
 
         public DateTime DonationDate { get; set; }
+
+        public int DonationTypeId { get; set; }
+
+        public DonationType DonationType { get; set; }
+
+        public string DonationTypeType
+        {
+            get
+            {
+                if (DonationType == null) return "";
+                return DonationType.Type;
+            }
+        }
 
         public int PersonID { get; set; }
 

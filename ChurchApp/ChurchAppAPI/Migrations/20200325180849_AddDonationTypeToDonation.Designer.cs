@@ -4,14 +4,16 @@ using ChurchAppAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChurchAppAPI.Migrations
 {
     [DbContext(typeof(ChurchAppContext))]
-    partial class ChurchAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200325180849_AddDonationTypeToDonation")]
+    partial class AddDonationTypeToDonation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,13 +128,13 @@ namespace ChurchAppAPI.Migrations
 
                     b.Property<DateTime>("DonationDate");
 
-                    b.Property<int>("DonationTypeId");
+                    b.Property<int?>("DonationTypeID");
 
                     b.Property<int>("PersonID");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("DonationTypeId");
+                    b.HasIndex("DonationTypeID");
 
                     b.HasIndex("PersonID");
 
@@ -302,8 +304,7 @@ namespace ChurchAppAPI.Migrations
                 {
                     b.HasOne("ChurchAppAPI.Entities.DonationType", "DonationType")
                         .WithMany()
-                        .HasForeignKey("DonationTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("DonationTypeID");
 
                     b.HasOne("ChurchAppAPI.Entities.Person", "Person")
                         .WithMany("Donations")

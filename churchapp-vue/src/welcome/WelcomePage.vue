@@ -13,7 +13,7 @@
 
       <v-card-actions>
         <v-btn text :to="{name: 'Login'}">Login</v-btn>
-        <v-btn text>Regester</v-btn>
+        <v-btn text>Register</v-btn>
       </v-card-actions>
     </v-card>
   </div>

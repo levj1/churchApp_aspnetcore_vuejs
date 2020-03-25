@@ -81,14 +81,21 @@
           </v-form>
         </v-container>
         <small>*indicates required field</small>
+
+        <Snackbar :message="snackMessage" :showSnackbar="showSnack" :barColor="snackColor" />
       </v-card-text>
     </v-card>
   </v-row>
 </template>
 
 <script>
+import Snackbar from "../../shared/Snackbar";
+
 export default {
   name: "GiverTemplate",
+  components: {
+    Snackbar
+  },
   async created() {
     const { id } = this.$route.params;
     if (id > 0) {
@@ -101,14 +108,14 @@ export default {
           }
         })
         .catch();
-    }else{
+    } else {
       this.person = {
         id: 0,
-        firstName: '',
-        middleName: '',
-        lastName: '',
+        firstName: "",
+        middleName: "",
+        lastName: "",
         addresses: []
-      }
+      };
     }
   },
   data: () => ({
@@ -121,7 +128,10 @@ export default {
     streetLine1Rules: [v => !!v || "Street Line 1 is Required"],
     cityRules: [v => !!v || "City is Required"],
     stateRules: [v => !!v || "State is Required"],
-    zipcodeRules: [v => !!v || "Zipcode is Required"]
+    zipcodeRules: [v => !!v || "Zipcode is Required"],
+    snackMessage: "",
+    showSnack: false,
+    snackColor: "success"
   }),
   methods: {
     async addOrEdit() {
@@ -130,20 +140,21 @@ export default {
           this.$store
             .dispatch("createGiver", JSON.stringify(this.person))
             .then(res => {
-              alert("You have succesfully added this person");
-              this.$router.push("/giver");
+              // alert("You have succesfully added this person");
+              this.popSnackMessage('You have succesfully added this person', true, 'success');
+              //this.$router.push("/giver");
             })
             .catch(err => {
-              alert("An error occured");
+              this.popSnackMessage('An error occured"', true, 'error');
             });
         } else {
           this.$store
             .dispatch("editGiver", JSON.stringify(this.person))
             .then(res => {
-              alert("Changed successfully saved");
+              this.popSnackMessage('Change successfully saved', true, 'success');
             })
             .catch(err => {
-              alert("An error occured");
+              this.popSnackMessage('An error occured', true, 'error');
             });
 
           await this.person.addresses.forEach(a => {
@@ -162,10 +173,11 @@ export default {
               this.$store
                 .dispatch("editAddressForPerson", payload)
                 .then(res => {
-                  alert("Changed successfully saved");
+                  this.popSnackMessage('Changed successfully saved', true, 'success');
+                  
                 })
                 .catch(err => {
-                  alert("An error occured while adding new address");
+                  this.popSnackMessage('An error occured while adding new address', true, 'error');
                 });
             } else {
               this.$store
@@ -183,10 +195,10 @@ export default {
                   }
                 })
                 .then(res => {
-                  alert("Changed successfully saved");
+                  this.popSnackMessage('Changed successfully saved', true, 'success');
                 })
                 .catch(err => {
-                  alert("An error occured while adding new address");
+                  this.popSnackMessage('An error occured while adding new address', true, 'error');
                 });
             }
             this.$router.push("/giver");
@@ -215,17 +227,22 @@ export default {
               personId: this.person.id
             })
             .then(res => {
-              alert("Successfully deleting address");
+              this.popSnackMessage('Successfully deleting address', true, 'success');
               var index = this.person.addresses.findIndex(
                 x => x.id == addressId
               );
               this.person.addresses.splice(index, 1);
             })
             .catch(err => {
-              alert("An error occured while deleting address");
+              this.popSnackMessage('An error occured while deleting address', true, 'error');
             });
         }
       }
+    },
+    popSnackMessage(message, show, color = "success") {
+      this.snackMessage = message;
+      this.showSnack = true;
+      this.snackColor = color;
     }
   }
 };

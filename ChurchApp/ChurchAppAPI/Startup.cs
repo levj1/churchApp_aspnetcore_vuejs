@@ -89,6 +89,7 @@ namespace ChurchAppAPI
                 .AddEntityFrameworkStores<ChurchAppContext>();
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IAddressRepository, AddressRepository>();
+            services.AddTransient<IDonationRepository, DonationRepository>();
 
             // Auto Mapper configuration
             var mappingConfig = new MapperConfiguration(mc =>

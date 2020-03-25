@@ -50,6 +50,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import('../account/LoginPage.vue')
+  },
+  {
+    path: '/welcome',
+    name: 'Welcome',
+    component: () => import('../welcome/WelcomePage.vue')
   }
 ]
 
