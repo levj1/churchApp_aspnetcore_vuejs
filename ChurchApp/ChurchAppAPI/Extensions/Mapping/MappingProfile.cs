@@ -15,6 +15,10 @@ namespace ChurchAppAPI.Extensions.Mapping
             CreateMap<PersonDto, Person>();
             CreateMap<Person, PersonWithoutAddressDto>();
             CreateMap<PersonWithoutAddressDto, Person>();
+            CreateMap<CreatePersonDto, Person>();
+            CreateMap<Person, CreatePersonDto>();
+            CreateMap<CreatePersonDto, PersonWithoutAddressDto>();
+            CreateMap<PersonWithoutAddressDto, CreatePersonDto>();
 
             CreateMap<Address, AddressDto>();
             CreateMap<AddressDto, Address>();

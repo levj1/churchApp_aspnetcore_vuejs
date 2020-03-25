@@ -6,7 +6,7 @@
       </v-card-title>
       <v-card-text>
         <v-container>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="form" v-model="valid" lazy-validation v-if="person">
             <v-row>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
@@ -35,61 +35,42 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12" sm="12" md="12" v-if="person.addresses.length == 0">
-                <v-checkbox v-model="addAddress" :label=" `Add address`"
-                v-on:change="addAddress = !addAddress"></v-checkbox>
+              <v-col
+                cols="12"
+                sm="12"
+                md="12"
+                v-if="person.addresses && person.addresses.length == 0"
+              >
+                <v-btn @click="addNewAddress">Add New Address</v-btn>
               </v-col>
               <v-row v-for="address in person.addresses" :key="address.Id">
-                <v-col cols="12" md="12">
-                  <h3>Address(es)</h3>
+                <v-col cols="12" md="12" align="right">
+                  <v-btn color="error" small @click="deleteAddress(address.id)">Delete</v-btn>
                 </v-col>
 
                 <v-divider></v-divider>
                 <v-col cols="12" sm="12" md="12">
-                  <v-text-field label="Address Line 1"
-                  :rules="streetLine1Rules"
-                   v-model="address.streetLine1"></v-text-field>
+                  <v-text-field
+                    label="Address Line 1"
+                    :rules="streetLine1Rules"
+                    v-model="address.streetLine1"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="12">
                   <v-text-field label="Address Line 2" v-model="address.streetLine2"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
-                  <v-text-field label="City"
-                  :rules="cityRules" v-model="address.city"></v-text-field>
+                  <v-text-field label="City" :rules="cityRules" v-model="address.city"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
-                  <v-text-field label="State"
-                  :rules="stateRules" v-model="address.state"></v-text-field>
+                  <v-text-field label="State" :rules="stateRules" v-model="address.state"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
-                  <v-text-field label="Zipcode"
-                  :rules="zipcodeRules" v-model="address.zipcode"></v-text-field>
+                  <v-text-field label="Zipcode" :rules="zipcodeRules" v-model="address.zipcode"></v-text-field>
                 </v-col>
               </v-row>
 
-              <v-row v-if="addAddress">
-                <v-col cols="12" sm="12" md="12">
-                  <v-text-field label="Address Line 1"
-                  :rules="streetLine1Rules"
-                   v-model="address.streetLine1"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="12" md="12">
-                  <v-text-field label="Address Line 2" v-model="address.streetLine2"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field label="City"
-                  :rules="cityRules" v-model="address.city"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field label="State"
-                  :rules="stateRules" v-model="address.state"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field label="Zipcode"
-                  :rules="zipcodeRules" v-model="address.zipcode"></v-text-field>
-                </v-col>
-              </v-row>
-              <v-col cols="12" sm="12">
+              <v-col cols="12" sm="12" align="center">
                 <v-btn color="primary" @click="addOrEdit()">
                   <span v-if="id > 0">Edit</span>
                   <span v-if="id == 0">Create</span>
@@ -117,31 +98,33 @@ export default {
         .then(res => {
           if (res && res.data) {
             this.person = res.data;
-            console.log("updated");
           }
         })
         .catch();
+    }else{
+      this.person = {
+        id: 0,
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        addresses: []
+      }
     }
   },
   data: () => ({
     valid: true,
-    addAddress: false,
     id: 0,
-    person: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      addresses: []
-    },
+    address: true,
+    person: {},
     firstNameRules: [v => !!v || "First Name is required"],
     lastNameRules: [v => !!v || "Middle Name is required"],
     streetLine1Rules: [v => !!v || "Street Line 1 is Required"],
     cityRules: [v => !!v || "City is Required"],
     stateRules: [v => !!v || "State is Required"],
-    zipcodeRules: [v => !!v || "Zipcode is Required"],
+    zipcodeRules: [v => !!v || "Zipcode is Required"]
   }),
   methods: {
-    addOrEdit() {
+    async addOrEdit() {
       if (this.$refs.form.validate()) {
         if (this.id == 0) {
           this.$store
@@ -158,16 +141,91 @@ export default {
             .dispatch("editGiver", JSON.stringify(this.person))
             .then(res => {
               alert("Changed successfully saved");
-              this.$router.push("/giver");
             })
             .catch(err => {
               alert("An error occured");
             });
+
+          await this.person.addresses.forEach(a => {
+            if (a.id > 0) {
+              var payload = {
+                personId: this.person.id,
+                address: {
+                  id: a.id,
+                  streetLine1: a.streetLine1,
+                  streetLine2: a.streetLine2,
+                  city: a.city,
+                  state: a.state,
+                  zipcode: a.zipcode
+                }
+              };
+              this.$store
+                .dispatch("editAddressForPerson", payload)
+                .then(res => {
+                  alert("Changed successfully saved");
+                })
+                .catch(err => {
+                  alert("An error occured while adding new address");
+                });
+            } else {
+              this.$store
+                .dispatch("addAddressForPerson", {
+                  personId: this.person.id,
+                  address: {
+                    id: a.id,
+                    streetLine1: a.streetLine1,
+                    streetLine2: a.streetLine2,
+                    city: a.city,
+                    state: a.state,
+                    zipcode: a.zipcode,
+                    addressTypeId: 1,
+                    personId: this.person.id
+                  }
+                })
+                .then(res => {
+                  alert("Changed successfully saved");
+                })
+                .catch(err => {
+                  alert("An error occured while adding new address");
+                });
+            }
+            this.$router.push("/giver");
+          });
         }
       }
     },
-    addNewAddress(){
-      this.addAddress = true;
+    addNewAddress() {
+      this.person.addresses.push({
+        id: 0,
+        addressTypeId: 1,
+        streetLine1: "",
+        streetLine2: "",
+        city: "",
+        state: "",
+        zipcode: "",
+        personId: this.person.id
+      });
+    },
+    deleteAddress(addressId) {
+      if (addressId > 0) {
+        if (confirm("Are you sure you want to delete this address?")) {
+          this.$store
+            .dispatch("deleteAddress", {
+              addressId: addressId,
+              personId: this.person.id
+            })
+            .then(res => {
+              alert("Successfully deleting address");
+              var index = this.person.addresses.findIndex(
+                x => x.id == addressId
+              );
+              this.person.addresses.splice(index, 1);
+            })
+            .catch(err => {
+              alert("An error occured while deleting address");
+            });
+        }
+      }
     }
   }
 };

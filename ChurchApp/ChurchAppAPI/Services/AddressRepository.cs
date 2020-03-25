@@ -23,7 +23,7 @@ namespace ChurchAppAPI.Services
 
         public void Delete(Address address)
         {
-            throw new NotImplementedException();
+            _churchAppContext.Remove(address);
         }
 
         public Address GetAddressForPerson(int personId, int addressId)

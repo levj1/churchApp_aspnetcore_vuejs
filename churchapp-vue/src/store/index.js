@@ -17,7 +17,7 @@ const store = new Vuex.Store({
     givers: [],
     currentUser: null,
     isAuthenticated: false,
-    token: localStorage.getItem('token') || '',
+    token: localStorage.getItem('token') || ''
   },
   mutations: {
     updateGivers(state, givers) {
@@ -82,6 +82,37 @@ const store = new Vuex.Store({
       axios.post('/api/accounts/register', user)
         .then()
         .catch();
+    },
+    async editAddressForPerson(context, payload) {
+
+      return await axios.put(config.BASE_URL + '/api/persons/' + payload.personId + '/addresses',
+        payload.address,
+        {
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        });
+    },
+    addAddressForPerson(context, payload) {
+      return axios.post(config.BASE_URL + '/api/persons/' + payload.personId + '/addresses',
+        payload.address,
+        {
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        });
+    },
+    deleteAddress(context, payload) {
+      return axios.delete(config.BASE_URL + '/api/persons/'
+        + payload.personId + '/addresses/' + payload.addressId,
+        {
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json;'
+          }
+        })
     },
     /*eslint no-unused-vars: "error"*/
     async login({ commit }, user) {

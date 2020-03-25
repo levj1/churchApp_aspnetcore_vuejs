@@ -4,6 +4,7 @@ using ChurchAppAPI.Models;
 using ChurchAppAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -52,19 +53,32 @@ namespace ChurchAppAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] PersonDto personDto)
+        public ActionResult Post([FromBody] CreatePersonDto personDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }        
 
-            var personEntity = _mapper.Map<Person>(personDto);
+            
+            var personWithoutAddress = _mapper.Map<PersonWithoutAddressDto>(personDto);
+            var personEntity = _mapper.Map<Person>(personWithoutAddress);
 
             _personRepository.Add(personEntity);
             if (!_personRepository.Save())
             {
                 return StatusCode(500, "An error occured while making the change");
+            }
+
+            foreach (var address in personDto.Addresses)
+            {
+                address.PersonID = personEntity.ID;
+                var addressEntity = _mapper.Map<Address>(address);
+                _addressRepository.Create(addressEntity);
+                if (!_addressRepository.Save())
+                {
+                    return StatusCode(500, "An error occured while making the change");
+                }
             }
 
             return CreatedAtAction("Post", new { id = personEntity.ID }, personEntity);
@@ -92,6 +106,35 @@ namespace ChurchAppAPI.Controllers
             }                     
 
             return NoContent();
+        }
+
+        [HttpPatch("{personId}")]
+        public IActionResult Patch([FromBody] JsonPatchDocument<PersonWithoutAddressDto> patchDoc, int personId)
+        {
+            if (patchDoc == null) return BadRequest();
+
+            var personEntity = _personRepository.GetPerson(personId, false);
+
+            if (personEntity == null) return NotFound();
+
+            var personToPatch = _mapper.Map<PersonWithoutAddressDto>(personEntity);
+
+            patchDoc.ApplyTo(personToPatch, ModelState);
+            TryValidateModel(personToPatch);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _mapper.Map(personToPatch, personEntity);
+
+            if (!_personRepository.Save())
+            {
+                return StatusCode(500, "Something went wrong.");
+            }
+
+            return NoContent();
+
         }
 
         [HttpDelete("{id}")]
