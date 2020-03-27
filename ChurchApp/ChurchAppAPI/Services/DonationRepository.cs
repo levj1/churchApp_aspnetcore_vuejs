@@ -20,6 +20,11 @@ namespace ChurchAppAPI.Services
             _churchAppContext.Add(donation);
         }
 
+        public void Create(ICollection<Donation> donations)
+        {
+            _churchAppContext.AddRange(donations);
+        }
+
         public void Delete(Donation donation)
         {
             _churchAppContext.Remove(donation);
@@ -29,12 +34,15 @@ namespace ChurchAppAPI.Services
         {
             return _churchAppContext.Donations
                 .Where(d => d.ID == id)
-                .Include("DonationType").FirstOrDefault();
+                .Include("DonationType")
+                .Include("Person").FirstOrDefault();
         }
 
         public IEnumerable<Donation> GetAll()
         {
-            return _churchAppContext.Donations.Include("DonationType").ToList();
+            return _churchAppContext.Donations
+                .Include("Person")
+                .Include("DonationType").ToList();
         }
 
         public bool Save()

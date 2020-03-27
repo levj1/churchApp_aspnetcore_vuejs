@@ -14,33 +14,51 @@ namespace ChurchAppAPI.Services
         {
             _context = context;
         }
-        public IEnumerable<Person> GetPeople(bool includeAddress)
+        public IEnumerable<Person> GetPeople(bool includeAddress, bool includeDonations)
         {
-            List<Person> people;
-            if (includeAddress)
+            if (includeAddress && includeDonations)
             {
                 return _context.Persons
                     .Include("Addresses.AddressType")
+                    .Include("Donations.DonationType")
                     .ToList();
             }
-            people = _context.Persons.ToList();
-            
-            return people;
-        }
-
-        public Person GetPerson(int id, bool includeAddress = false)
-        {
-            Person person = _context.Persons
-                .Where(x => x.ID == id)
-                .FirstOrDefault();
             if (includeAddress)
             {
-                person = _context.Persons
+                return _context.Persons.Include("Addresses.AddressType").ToList();
+            }
+            if (includeDonations)
+            {
+                return _context.Persons.Include("Donations.DonationType").ToList();
+            }
+
+            return _context.Persons.ToList();
+        }
+
+        public Person GetPerson(int id, bool includeAddress = false, bool includeDonations = false)
+        {
+            if (includeAddress && includeDonations)
+            {
+                return _context.Persons
                 .Where(x => x.ID == id)
                 .Include("Addresses.AddressType")
-                .FirstOrDefault();
+                .Include("Donations.DonationType").FirstOrDefault();
             }
-            return person;
+            if (includeDonations)
+            {
+                return _context.Persons
+                .Where(x => x.ID == id)
+                .Include("Donations.DonationType").FirstOrDefault();
+            }
+            if (includeAddress)
+            {
+                return _context.Persons
+                .Where(x => x.ID == id)
+                .Include("Addresses.AddressType").FirstOrDefault();
+            }
+
+            return _context.Persons
+               .Where(x => x.ID == id).FirstOrDefault();
         }
 
         public void Add(Person person)

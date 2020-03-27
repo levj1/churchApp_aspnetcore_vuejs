@@ -45,10 +45,8 @@
               </v-col>
               <v-row v-for="address in person.addresses" :key="address.Id">
                 <v-col cols="12" md="12" align="right">
-                  <v-btn color="error" small @click="deleteAddress(address.id)">Delete</v-btn>
+                  <v-btn color="error" small @click="deleteAddress(address.id)">Delete Address</v-btn>
                 </v-col>
-
-                <v-divider></v-divider>
                 <v-col cols="12" sm="12" md="12">
                   <v-text-field
                     label="Address Line 1"
@@ -101,7 +99,11 @@ export default {
     if (id > 0) {
       this.id = id;
       await this.$store
-        .dispatch("getGiver", id)
+        .dispatch("getGiver", {
+            id: id,
+            includeAddress: false,
+            includeDonations: false
+          })
         .then(res => {
           if (res && res.data) {
             this.person = res.data;
@@ -201,7 +203,6 @@ export default {
                   this.popSnackMessage('An error occured while adding new address', true, 'error');
                 });
             }
-            this.$router.push("/giver");
           });
         }
       }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ChurchAppAPI.Controllers
 {
-    [EnableCors]
+    [EnableCors("CorsPolicy")]
     [ApiController]
     [Route("api/donations")]
     public class DonationsController: ControllerBase
@@ -66,6 +66,27 @@ namespace ChurchAppAPI.Controllers
             var donationCreated = _mapper.Map<DonationDto>(donationEntity);
 
             return CreatedAtAction("Post", new { id = donationEntity.ID }, donationCreated);
+        }
+
+        [HttpPost("CreateDonations")]
+        public IActionResult Post([FromBody] ICollection<DonationCreateDto> donations)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var donationEntities = _mapper.Map<List<Donation>>(donations);
+
+            _donationRepository.Create(donationEntities);
+            if (!_donationRepository.Save())
+            {
+                return StatusCode(500, "An error occured while processing your request");
+            }
+
+            var donationCreated = _mapper.Map<List<DonationDto>>(donationEntities);
+
+            return CreatedAtAction("Post", donationCreated);
         }
 
         [HttpPut]

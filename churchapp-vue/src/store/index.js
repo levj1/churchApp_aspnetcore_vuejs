@@ -17,11 +17,15 @@ const store = new Vuex.Store({
     givers: [],
     currentUser: null,
     isAuthenticated: false,
-    token: localStorage.getItem('token') || ''
+    token: localStorage.getItem('token') || '',
+    donationTypes: [],
   },
   mutations: {
     updateGivers(state, givers) {
       state.givers = givers;
+    },
+    updateDonationTypes(state, types) {
+      state.donationTypes = types;
     },
     updateCurrentUser(state, user) {
       state.currentUser = user;
@@ -40,14 +44,16 @@ const store = new Vuex.Store({
 
   },
   actions: {
-    async getGivers({ commit }) {
-      await axios.get(config.BASE_URL + '/api/persons')
+    async getGivers({ commit }, payload) {
+      await axios.get(config.BASE_URL + '/api/persons?includeAddress='
+        + payload.includeAddress + '&includeDonations=' + payload.includeDonations)
         .then(result => commit('updateGivers', result.data))
         .catch()
         ;
     },
-    getGiver(context, id) {
-      return axios.get(config.BASE_URL + '/api/persons/' + id + '?includeAddress=true');
+    getGiver(context, payload) {
+      return axios.get(config.BASE_URL + '/api/persons/' + payload.id
+        + '?includeAddress=' + payload.includeAddress + '&includeDonations=' + payload.includeDonations);
     },
     createGiver(context, person) {
       return axios.post(config.BASE_URL + '/api/persons',
@@ -77,6 +83,30 @@ const store = new Vuex.Store({
             'Content-Type': 'application/json'
           }
         };
+    },
+    getDonations(){
+      return axios.get(config.BASE_URL + '/api/donations',
+      {
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json'
+        }
+      });
+    },
+    createDonations(context, donations){
+      return axios.post(config.BASE_URL + '/api/donations/createDonations', donations,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json'
+        }
+      })
+    },
+    async getDonationTypes({commit}) {
+      await axios.get(config.BASE_URL + '/api/donationTypes')
+        .then(result => commit('updateDonationTypes', result.data))
+        .catch()
+        ;
     },
     registerUser(context, user) {
       axios.post('/api/accounts/register', user)

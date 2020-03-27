@@ -8,9 +8,9 @@ namespace ChurchAppAPI.Services
 {
     public interface IPersonRepository
     {
-        IEnumerable<Person> GetPeople(bool includeAddress);
+        IEnumerable<Person> GetPeople(bool includeAddress = false, bool includeDonations = false);
 
-        Person GetPerson(int id, bool includeAddress = false);
+        Person GetPerson(int id, bool includeAddress = false, bool includeDonations = false);
 
         void Add(Person person);
 

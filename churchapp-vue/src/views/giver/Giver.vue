@@ -20,7 +20,10 @@
 export default {
   name: "giver",
   created() {
-    this.$store.dispatch("getGivers");
+    this.$store.dispatch("getGivers", {
+      includeAddress: false,
+      includeDonations: false
+    });
   },
   computed: {
     givers() {
@@ -68,7 +71,10 @@ export default {
       if (resp) {
         this.$store.dispatch("deleteGiver", item.id).then(res => {
           alert("item deleted");
-          this.$store.dispatch("getGivers");
+          this.$store.dispatch("getGivers", {
+            includeAddress: false,
+            includeDonations: false
+          });
         });
       }
     }

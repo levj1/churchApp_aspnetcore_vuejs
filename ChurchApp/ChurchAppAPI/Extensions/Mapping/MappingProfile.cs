@@ -34,6 +34,7 @@ namespace ChurchAppAPI.Extensions.Mapping
 
             CreateMap<DonationTypeDto, DonationType>();
             CreateMap<DonationType, DonationTypeDto>();
+            CreateMap<DonationTypeCreateDto, DonationType>();
 
             CreateMap<Donation, DonationDto>();
             CreateMap<DonationDto, Donation>();
@@ -41,6 +42,8 @@ namespace ChurchAppAPI.Extensions.Mapping
             CreateMap<DonationCreateDto, Donation>();
             CreateMap<DonationToUpdate, Donation>();
             CreateMap<Donation, DonationToUpdate>();
+            CreateMap<Donation, DonationWithoutPersonDto>();
+            CreateMap<DonationWithoutPersonDto, Donation>();
             
 
         }

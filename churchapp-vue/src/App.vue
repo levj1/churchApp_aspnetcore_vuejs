@@ -13,6 +13,9 @@
       <router-link to="/giver" v-if="getUser">
         <v-btn text>Givers</v-btn>
       </router-link>
+      <router-link to="/donations" v-if="getUser">
+        <v-btn text>Donations</v-btn>
+      </router-link>
       <div v-if="getUser">
         <span class="mr-2">Hi {{getUser.userName}}</span>
         <v-btn text @click="logout">(Logout)</v-btn>

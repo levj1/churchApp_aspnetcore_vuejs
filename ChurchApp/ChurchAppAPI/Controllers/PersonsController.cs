@@ -33,18 +33,18 @@ namespace ChurchAppAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetPersons([FromQuery] bool includeAddress = false)
+        public ActionResult GetPersons([FromQuery] bool includeAddress = false, bool includeDonations = false)
         {
-            var persons = _personRepository.GetPeople(includeAddress);
+            var persons = _personRepository.GetPeople(includeAddress, includeDonations);
             var personDtos = _mapper.Map<List<PersonDto>>(persons);
 
             return Ok(personDtos);
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetPerson(int id, [FromQuery] bool includeAddress = false)
+        public ActionResult GetPerson(int id, [FromQuery] bool includeAddress = false, bool includeDonations = false)
         {
-            var person = _personRepository.GetPerson(id, includeAddress);
+            var person = _personRepository.GetPerson(id, includeAddress, includeDonations);
             if (person == null) { return NotFound(); }
 
             var personDto = _mapper.Map<PersonDto>(person);
@@ -92,7 +92,7 @@ namespace ChurchAppAPI.Controllers
                 return BadRequest();
             }   
 
-            var personInDb = _personRepository.GetPerson(person.ID, false);
+            var personInDb = _personRepository.GetPerson(person.ID, false, false);
             if(personInDb == null)
             {
                 return NotFound();
@@ -113,7 +113,7 @@ namespace ChurchAppAPI.Controllers
         {
             if (patchDoc == null) return BadRequest();
 
-            var personEntity = _personRepository.GetPerson(personId, false);
+            var personEntity = _personRepository.GetPerson(personId, false, false);
 
             if (personEntity == null) return NotFound();
 
@@ -140,7 +140,7 @@ namespace ChurchAppAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var personInDb = _personRepository.GetPerson(id, false);
+            var personInDb = _personRepository.GetPerson(id, false, false);
             if(personInDb == null) { return NotFound(); }
 
             _personRepository.Delete(personInDb);

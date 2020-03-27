@@ -17,6 +17,7 @@ C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netco
 C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netcoreapp2.2\ChurchAppAPI.runtimeconfig.dev.json
 C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netcoreapp2.2\ChurchAppAPI.dll
 C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\bin\Debug\netcoreapp2.2\ChurchAppAPI.pdb
+C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.csprojAssemblyReference.cache
 C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.csproj.CoreCompileInputs.cache
 C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.RazorAssemblyInfo.cache
 C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.RazorAssemblyInfo.cs
@@ -25,4 +26,3 @@ C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netco
 C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.RazorTargetAssemblyInfo.cache
 C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.dll
 C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.pdb
-C:\Development\churchApp_aspnetcore_vuejs\ChurchApp\ChurchAppAPI\obj\Debug\netcoreapp2.2\ChurchAppAPI.csprojAssemblyReference.cache

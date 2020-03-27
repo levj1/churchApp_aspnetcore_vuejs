@@ -55,6 +55,16 @@ const routes = [
     path: '/welcome',
     name: 'Welcome',
     component: () => import('../welcome/WelcomePage.vue')
+  },
+  {
+    path: '/donations',
+    name: 'Donation',
+    component: () => import('../views/donation/DonationList.vue')
+  },
+  {
+    path: '/adddonation',
+    name: 'AddDonation',
+    component: () => import('../views/donation/AddDonation.vue')
   }
 ]
 

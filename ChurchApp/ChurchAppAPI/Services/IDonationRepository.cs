@@ -16,6 +16,8 @@ namespace ChurchAppAPI.Services
 
         void Create(Donation donation);
 
+        void Create(ICollection<Donation> donations);
+
         void Delete(Donation donatioon);
     }
 }

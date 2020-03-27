@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChurchAppAPI.Entities
+namespace ChurchAppAPI.Models
 {
-    public class DonationType
+    public class DonationTypeCreateDto
     {
-        public int ID { get; set; }
-
         [Required]
         [MaxLength(20)]
         public string Type { get; set; }

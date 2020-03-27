@@ -26,5 +26,7 @@ namespace ChurchAppAPI.Models
         }
 
         public List<AddressDto> Addresses { get; set; }
+
+        public List<DonationWithoutPersonDto> Donations { get; set; }
     }
 }
