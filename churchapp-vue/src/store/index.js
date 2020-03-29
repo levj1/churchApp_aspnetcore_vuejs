@@ -84,25 +84,43 @@ const store = new Vuex.Store({
           }
         };
     },
-    getDonations(){
+    getDonations() {
       return axios.get(config.BASE_URL + '/api/donations',
-      {
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Content-Type': 'application/json'
-        }
-      });
+        {
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json'
+          }
+        });
     },
-    createDonations(context, donations){
+    getADonation(context, id) {
+      return axios.get(config.BASE_URL + '/api/donations/' + id,
+        {
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json'
+          }
+        });
+    },
+    createDonations(context, donations) {
       return axios.post(config.BASE_URL + '/api/donations/createDonations', donations,
-      {
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Content-Type': 'application/json'
-        }
-      })
+        {
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json'
+          }
+        })
     },
-    async getDonationTypes({commit}) {
+    deleteDonation(context, id) {
+      return axios.delete(config.BASE_URL + '/api/donations/' + id,
+        {
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-type': 'application/json'
+          }
+        });
+    },
+    async getDonationTypes({ commit }) {
       await axios.get(config.BASE_URL + '/api/donationTypes')
         .then(result => commit('updateDonationTypes', result.data))
         .catch()

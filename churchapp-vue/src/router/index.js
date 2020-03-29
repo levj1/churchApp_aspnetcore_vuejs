@@ -65,6 +65,14 @@ const routes = [
     path: '/adddonation',
     name: 'AddDonation',
     component: () => import('../views/donation/AddDonation.vue')
+  }, {
+    path: '/editdonation/:id',
+    name: 'EditDonation',
+    component: () => import('../views/donation/EditDonation.vue'),
+    props: (route) => ({
+      donation: {},
+      ...route.params
+  })
   }
 ]
 

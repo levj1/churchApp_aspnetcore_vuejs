@@ -1,10 +1,20 @@
 <template>
-  <div class="giver">
+  <div class="donation">
+    <div class="text-right pa-2" >
+        <v-btn color="secondary" @click="addDonation">Add Donation</v-btn>
+    </div>
+
     <v-card>
       <v-card-title>
         Donations
         <v-spacer></v-spacer>
-        <v-btn @click="addDonation">Add Donation</v-btn>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
       </v-card-title>
       <v-data-table :headers="headers" :items="donations" :search="search">
         <template v-slot:item.donationDate="{ item }">
@@ -12,8 +22,8 @@
           <!-- <v-icon small @click="deletePerson(item)">mdi-delete</v-icon> -->
         </template>
         <template v-slot:item.action="{ item }">
-          <v-icon small class="mr-2" @click="editDonation(item)">mdi-pencil</v-icon>
-          <v-icon small @click="deleteDonation(item)">mdi-delete</v-icon>
+          <v-icon class="mr-2" @click="editDonation(item)">mdi-pencil</v-icon>
+          <v-icon @click="deleteDonation(item)">mdi-delete</v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -21,18 +31,14 @@
 </template>
 
 <script>
-import moment from "moment";
-
 export default {
   name: "giver",
+  components: {},
   created() {
     this.$store
       .dispatch("getDonations")
       .then(res => {
         this.donations = res.data;
-        this.donations.forEach(a => {
-          console.log(this.formatDate(a.donationDate));
-        });
       })
       .catch(err => {
         console.log("error while getter donations");
@@ -45,8 +51,8 @@ export default {
   },
   data() {
     return {
-      donations: [],
       search: "",
+      donations: [],
       headers: [
         {
           text: "Full Name",
@@ -75,28 +81,27 @@ export default {
     };
   },
   methods: {
-    editItem(item) {
-      this.$router.push({ name: "EditGiver", params: { id: item.id } });
+    editDonation(item) {
+      this.$router.push({ name: "EditDonation", params: { id: item.id } });
     },
     addDonation() {
       this.$router.push({ name: "AddDonation" });
     },
-    deletePerson(item) {
-      let resp = confirm(
-        "Are you sure you want to delete: " +
-          item.firstName +
-          " " +
-          item.lastName +
-          "?"
-      );
+    deleteDonation(item) {
+      let resp = confirm("Are you sure you want to delete this donation");
       if (resp) {
-        this.$store.dispatch("deleteGiver", item.id).then(res => {
-          alert("item deleted");
-          this.$store.dispatch("getGivers", {
-            includeAddress: false,
-            includeDonations: false
+        this.$store
+          .dispatch("deleteDonation", item.id)
+          .then(res => {
+            var index = this.donations.findIndex(x => x.id == item.id);
+            this.donations.splice(index, 1);
+
+            alert("Successfully delete donation for that person.");
+          })
+          .catch(err => {
+            console.log(err);
+            alert("Failed to delete the donation for this person.");
           });
-        });
       }
     },
     formatDate(d, format) {
@@ -117,7 +122,7 @@ export default {
 
         case "mm/dd/yyyy":
           return [month, day, year].join("/");
-        
+
         case "mm-dd-yyyy":
           return [month, day, year].join("-");
 

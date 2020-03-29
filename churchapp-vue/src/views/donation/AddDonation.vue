@@ -38,18 +38,21 @@
             ></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-btn small color="green" @click="addLine" v-if="index == donations.length - 1">Add</v-btn>
             <v-btn
+              class="ma-2"
               small
-              color="red"
-              @click="removeLine(index)"
-              v-if="index != donations.length - 1"
-            >Remove</v-btn>
+              color="green"
+              @click="addLine"
+              v-if="index == donations.length - 1"
+            >Add</v-btn>
+            <v-btn small color="red" @click="removeLine(index)" v-if="donations.length > 1">Remove</v-btn>
           </v-col>
         </v-row>
         <v-row>
           <v-col align="center">
-            <v-btn color="primary" @click="submit">Submit</v-btn>
+            <v-btn class="ma-2" color="primary" @click="submit">Submit</v-btn>
+
+            <v-btn color="secondary" @click="cancel">Cancel</v-btn>
           </v-col>
         </v-row>
       </v-card-text>
@@ -157,6 +160,7 @@ export default {
         this.$store
           .dispatch("createDonations", JSON.stringify(this.donations))
           .then(res => {
+            this.donations = don;
             this.$router.push("/donations");
           })
           .catch(err => {
@@ -166,6 +170,10 @@ export default {
             this.snackColor = "error";
           });
       }
+    },
+    cancel() {
+      this.$refs.form.reset();
+      this.$router.push("/donations");
     }
   }
 };

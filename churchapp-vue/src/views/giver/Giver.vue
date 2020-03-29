@@ -1,10 +1,16 @@
 <template>
   <div class="giver">
+    
+    <div class="text-right pa-2" >
+        <v-btn color="secondary" @click="addPerson">Add New Person</v-btn>
+    </div>
+
     <v-card>
       <v-card-title>
         Givers
         <v-spacer></v-spacer>
-        <v-btn @click="addPerson">Add New Person</v-btn>
+        <v-text-field v-model="search"
+        append-icon="mdi-magnify" label="Search"></v-text-field>
       </v-card-title>
       <v-data-table :headers="headers" :items="givers" :search="search">
         <template v-slot:item.action="{ item }">
@@ -35,7 +41,7 @@ export default {
   },
   data() {
     return {
-      search: "",
+      search: '',
       headers: [
         {
           text: "First Name",

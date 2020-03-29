@@ -69,7 +69,7 @@
               </v-row>
 
               <v-col cols="12" sm="12" align="center">
-                <v-btn color="primary" @click="addOrEdit()">
+                <v-btn class="ma-2" color="primary" @click="addOrEdit()">
                   <span v-if="id > 0">Edit</span>
                   <span v-if="id == 0">Create</span>
                 </v-btn>
