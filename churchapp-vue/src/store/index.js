@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios';
-import config from '../config';
 
 Vue.use(Vuex)
 
@@ -45,18 +44,18 @@ const store = new Vuex.Store({
   },
   actions: {
     async getGivers({ commit }, payload) {
-      await axios.get(config.BASE_URL + '/api/persons?includeAddress='
+      await axios.get(process.env.VUE_APP_API + '/api/persons?includeAddress='
         + payload.includeAddress + '&includeDonations=' + payload.includeDonations)
         .then(result => commit('updateGivers', result.data))
         .catch()
         ;
     },
     getGiver(context, payload) {
-      return axios.get(config.BASE_URL + '/api/persons/' + payload.id
+      return axios.get(process.env.VUE_APP_API + '/api/persons/' + payload.id
         + '?includeAddress=' + payload.includeAddress + '&includeDonations=' + payload.includeDonations);
     },
     createGiver(context, person) {
-      return axios.post(config.BASE_URL + '/api/persons',
+      return axios.post(process.env.VUE_APP_API + '/api/persons',
         person,
         {
           headers: {
@@ -66,7 +65,7 @@ const store = new Vuex.Store({
         })
     },
     editGiver(context, person) {
-      return axios.put(config.BASE_URL + '/api/persons',
+      return axios.put(process.env.VUE_APP_API + '/api/persons',
         person,
         {
           headers: {
@@ -76,7 +75,7 @@ const store = new Vuex.Store({
         })
     },
     deleteGiver(context, id) {
-      return axios.delete(config.BASE_URL + '/api/persons/' + id),
+      return axios.delete(process.env.VUE_APP_API + '/api/persons/' + id),
         {
           headers: {
             'Authorization': 'Bearer ' + this.state.token,
@@ -85,7 +84,7 @@ const store = new Vuex.Store({
         };
     },
     getDonations() {
-      return axios.get(config.BASE_URL + '/api/donations',
+      return axios.get(process.env.VUE_APP_API + '/api/donations',
         {
           headers: {
             'Authorization': 'Bearer ' + this.state.token,
@@ -94,7 +93,7 @@ const store = new Vuex.Store({
         });
     },
     getADonation(context, id) {
-      return axios.get(config.BASE_URL + '/api/donations/' + id,
+      return axios.get(process.env.VUE_APP_API + '/api/donations/' + id,
         {
           headers: {
             'Authorization': 'Bearer ' + this.state.token,
@@ -103,7 +102,7 @@ const store = new Vuex.Store({
         });
     },
     createDonations(context, donations) {
-      return axios.post(config.BASE_URL + '/api/donations/createDonations', donations,
+      return axios.post(process.env.VUE_APP_API + '/api/donations/createDonations', donations,
         {
           headers: {
             'Authorization': 'Bearer ' + this.state.token,
@@ -112,7 +111,7 @@ const store = new Vuex.Store({
         })
     },
     deleteDonation(context, id) {
-      return axios.delete(config.BASE_URL + '/api/donations/' + id,
+      return axios.delete(process.env.VUE_APP_API + '/api/donations/' + id,
         {
           headers: {
             'Authorization': 'Bearer ' + this.state.token,
@@ -121,19 +120,19 @@ const store = new Vuex.Store({
         });
     },
     async getDonationTypes({ commit }) {
-      await axios.get(config.BASE_URL + '/api/donationTypes')
+      await axios.get(process.env.VUE_APP_API + '/api/donationTypes')
         .then(result => commit('updateDonationTypes', result.data))
         .catch()
         ;
     },
     registerUser(context, user) {
-      axios.post('/api/accounts/register', user)
+      axios.post(process.env.VUE_APP_API + '/api/accounts/register', user)
         .then()
         .catch();
     },
     async editAddressForPerson(context, payload) {
 
-      return await axios.put(config.BASE_URL + '/api/persons/' + payload.personId + '/addresses',
+      return await axios.put(process.env.VUE_APP_API + '/api/persons/' + payload.personId + '/addresses',
         payload.address,
         {
           headers: {
@@ -143,7 +142,7 @@ const store = new Vuex.Store({
         });
     },
     addAddressForPerson(context, payload) {
-      return axios.post(config.BASE_URL + '/api/persons/' + payload.personId + '/addresses',
+      return axios.post(process.env.VUE_APP_API + '/api/persons/' + payload.personId + '/addresses',
         payload.address,
         {
           headers: {
@@ -153,7 +152,7 @@ const store = new Vuex.Store({
         });
     },
     deleteAddress(context, payload) {
-      return axios.delete(config.BASE_URL + '/api/persons/'
+      return axios.delete(process.env.VUE_APP_API + '/api/persons/'
         + payload.personId + '/addresses/' + payload.addressId,
         {
           headers: {
@@ -164,7 +163,7 @@ const store = new Vuex.Store({
     },
     /*eslint no-unused-vars: "error"*/
     async login({ commit }, user) {
-      await axios.post('/api/accounts/login', user)
+      await axios.post(process.env.VUE_APP_API + '/api/accounts/login', user)
         .then(result => {
           commit('updateCurrentUser', result.data);
           const token = result.data.bearerToken;

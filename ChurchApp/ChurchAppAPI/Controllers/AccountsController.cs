@@ -2,6 +2,7 @@
 using ChurchAppAPI.Entities;
 using ChurchAppAPI.Extensions.Error;
 using ChurchAppAPI.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace ChurchAppAPI.Controllers
 {
+    [EnableCors("CorsPolicy")]
     [Route("api/accounts")]
     [ApiController]
     public class AccountsController: ControllerBase

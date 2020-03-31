@@ -45,9 +45,7 @@ export default {
   created() {
     this.$store
       .dispatch("getDonationTypes")
-      .then().catch(err => {
-        console.log("An error occured while loading donation types");
-      });
+      .then().catch();
 
     const { id } = this;
     if (+id > 0) {
@@ -62,9 +60,7 @@ export default {
               this.people.push(res.data.person);
             }
           }
-        }).catch(err => {
-          console.log("An error occured while loading people");
-        });
+        }).catch();
     }
   },
   props: {
