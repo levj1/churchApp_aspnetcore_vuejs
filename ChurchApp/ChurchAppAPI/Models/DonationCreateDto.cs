@@ -17,5 +17,12 @@ namespace ChurchAppAPI.Models
         public int DonationTypeId { get; set; }
 
         public int PersonID { get; set; }
+
+
+        public bool IsCheck { get; set; }
+
+        public bool IsCash { get; set; }
+
+        public int MemberId { get; set; }
     }
 }

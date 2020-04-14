@@ -35,5 +35,12 @@ namespace ChurchAppAPI.Entities
         public int PersonID { get; set; }
 
         public Person Person { get; set; }
+
+        public bool IsCheck { get; set; }
+
+        public bool IsCash { get; set; }
+
+
+        public int MemberId { get; set; }
     }
 }

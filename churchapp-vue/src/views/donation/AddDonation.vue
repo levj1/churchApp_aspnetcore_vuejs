@@ -57,11 +57,16 @@
         </v-row>
       </v-card-text>
     </v-form>
-    <Snackbar :message="snackMessage" :showSnackbar="showSnack" :barColor="snackColor" />
+    <snackBar
+      v-if="show"
+      v-bind:open.sync="show"
+      v-bind:text.sync="message"
+      v-bind:color.sync="color"
+    ></snackBar>
   </v-card>
 </template>
 <script>
-import Snackbar from "../../shared/Snackbar";
+import snackBar from "../../shared/Snackbar";
 import utilityMixin from "../../shared/mixin/util-mixin.js";
 
 const don = [
@@ -94,7 +99,7 @@ export default {
       });
   },
   components: {
-    Snackbar
+    snackBar
   },
   computed: {
     people() {
@@ -105,6 +110,9 @@ export default {
     }
   },
   data: () => ({
+    show: false,
+    color: "error",
+    message: "",
     valid: true,
     donations: don,
     personRules: [v => !!v || "Person is Required"],
@@ -113,9 +121,6 @@ export default {
       v => !!v || "Amount is Required",
       v => v > 0 || "Amount must be great than zero"
     ],
-    snackMessage: "",
-    showSnack: false,
-    snackColor: "success"
   }),
   methods: {
     addLine() {
@@ -140,10 +145,9 @@ export default {
             this.$router.push("/donations");
           })
           .catch(err => {
-            this.snackMessage =
-              "Failed! An error occured while adding donations";
-            this.showSnack = true;
-            this.snackColor = "error";
+            this.message = "Failed! An error occured while adding donations";
+            this.show = true;
+            this.color = "error";
           });
       }
     },

@@ -16,5 +16,11 @@ namespace ChurchAppAPI.Models
         public DateTime DonationDate { get; set; }
 
         public int DonationTypeId { get; set; }
+
+        public bool IsCheck { get; set; }
+
+        public bool IsCash { get; set; }
+
+        public int MemberId { get; set; }
     }
 }

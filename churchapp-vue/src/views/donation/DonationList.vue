@@ -21,13 +21,25 @@
           <v-data-table :headers="headers" :items="donations" :search="search">
             <template v-slot:item.donationDate="{ item }">
               <span>{{formatDate(item.donationDate, 'mm-dd-yyyy')}}</span>
-              <!-- <v-icon small @click="deletePerson(item)">mdi-delete</v-icon> -->
             </template>
             <template v-slot:item.action="{ item }">
               <v-icon class="mr-2" @click="editDonation(item)">mdi-pencil</v-icon>
               <v-icon @click="deleteDonation(item)">mdi-delete</v-icon>
             </template>
           </v-data-table>
+          <snackBar
+            v-if="show"
+            v-bind:open.sync="show"
+            v-bind:text.sync="message"
+            v-bind:color.sync="color"
+          ></snackBar>
+
+          <dialogMessage
+            v-if="showDialog"
+            v-bind:dialog.sync="showDialog"
+            v-bind:message.sync="alertMessage"
+            v-on:dialogConfirmationEvent="confirmEvent"
+          ></dialogMessage>
         </v-card>
       </div>
     </v-col>
@@ -41,12 +53,16 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
-import utilityMixin from '../../shared/mixin/util-mixin.js';
+import utilityMixin from "../../shared/mixin/util-mixin.js";
+import snackBar from "../../shared/Snackbar";
+import dialogMessage from "../../shared/DialogMessage";
 
 export default {
   name: "giver",
   components: {
-    apexchart: VueApexCharts
+    apexchart: VueApexCharts,
+    snackBar,
+    dialogMessage
   },
   mixins: [utilityMixin],
   created() {
@@ -70,6 +86,12 @@ export default {
   },
   data() {
     return {
+      donationToDelete: null,
+      show: false,
+      showDialog: false,
+      alertMessage: "",
+      color: "error",
+      message: "",
       search: "",
       donations: [],
       headers: [
@@ -123,6 +145,30 @@ export default {
     };
   },
   methods: {
+    confirmEvent(val) {
+      console.log(this.donationToDelete);
+      if (val && this.donationToDelete) {
+        this.$store
+          .dispatch("deleteDonation", this.donationToDelete.id)
+          .then(res => {
+            var index = this.donations.findIndex(
+              x => x.id == this.donationToDelete.id
+            );
+            this.donations.splice(index, 1);
+
+            this.message = "Successfully deleted donation for that person.";
+            this.color = "success";
+            this.show = true;
+            this.donationToDelete = null;
+          })
+          .catch(err => {
+            console.log(err);
+            this.message = "Failed to delete the donation for this person.";
+            this.color = "error";
+            this.show = true;
+          });
+      }
+    },
     editDonation(item) {
       this.$router.push({ name: "EditDonation", params: { id: item.id } });
     },
@@ -130,21 +176,11 @@ export default {
       this.$router.push({ name: "AddDonation" });
     },
     deleteDonation(item) {
-      let resp = confirm("Are you sure you want to delete this donation");
-      if (resp) {
-        this.$store
-          .dispatch("deleteDonation", item.id)
-          .then(res => {
-            var index = this.donations.findIndex(x => x.id == item.id);
-            this.donations.splice(index, 1);
+      this.donationToDelete = item;
 
-            alert("Successfully delete donation for that person.");
-          })
-          .catch(err => {
-            console.log(err);
-            alert("Failed to delete the donation for this person.");
-          });
-      }
+      // Confirm deletion by showing alert message
+      this.showDialog = true;
+      this.alertMessage = "Are you sure you want to delete this donation";
     },
     sortDataForGraph() {
       console.log(this.donations);
@@ -157,12 +193,12 @@ export default {
         });
         this.sumOfTypes.push(sum);
       });
-    },
+    }
   }
 };
 </script>
 <style scoped>
-.chart{
+.chart {
   position: relative;
   top: 300px;
 }

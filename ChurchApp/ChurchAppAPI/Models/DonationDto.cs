@@ -24,5 +24,12 @@ namespace ChurchAppAPI.Models
         public int PersonID { get; set; }
 
         public PersonWithoutAddressDto Person { get; set; }
+
+        public bool IsCheck { get; set; }
+
+        public bool IsCash { get; set; }
+
+
+        public int MemberId { get; set; }
     }
 }
