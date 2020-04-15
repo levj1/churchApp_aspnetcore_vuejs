@@ -66,7 +66,7 @@ export default {
         );
 
         this.$store.dispatch(
-          "registerUser",
+          "account/registerUser",
           Object.assign({
             firstName: this.firstName,
             lastName: this.lastName,

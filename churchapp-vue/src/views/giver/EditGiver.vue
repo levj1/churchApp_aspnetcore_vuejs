@@ -103,7 +103,7 @@ export default {
     if (id > 0) {
       this.id = id;
       await this.$store
-        .dispatch("getGiver", {
+        .dispatch("giver/getGiver", {
           id: id,
           includeAddress: false,
           includeDonations: false
@@ -144,7 +144,7 @@ export default {
       if (this.$refs.form.validate()) {
         if (this.id == 0) {
           this.$store
-            .dispatch("createGiver", JSON.stringify(this.person))
+            .dispatch("giver/createGiver", JSON.stringify(this.person))
             .then(res => {
               this.message = "You have succesfully added this person";
               this.color = "success";
@@ -156,7 +156,7 @@ export default {
             });
         } else {
           this.$store
-            .dispatch("editGiver", JSON.stringify(this.person))
+            .dispatch("giver/editGiver", JSON.stringify(this.person))
             .then(res => {
               this.popSnackMessage(
                 "Change successfully saved",
@@ -182,7 +182,7 @@ export default {
                 }
               };
               this.$store
-                .dispatch("editAddressForPerson", payload)
+                .dispatch("address/editAddressForPerson", payload)
                 .then(res => {
                   this.popSnackMessage(
                     "Changed successfully saved",
@@ -199,7 +199,7 @@ export default {
                 });
             } else {
               this.$store
-                .dispatch("addAddressForPerson", {
+                .dispatch("address/addAddressForPerson", {
                   personId: this.person.id,
                   address: {
                     id: a.id,
@@ -247,7 +247,7 @@ export default {
       if (addressId > 0) {
         if (confirm("Are you sure you want to delete this address?")) {
           this.$store
-            .dispatch("deleteAddress", {
+            .dispatch("address/deleteAddress", {
               addressId: addressId,
               personId: this.person.id
             })

@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     getUser(){
-      return this.$store.state.currentUser;
+      return this.$store.state.account.currentUser;
     }
   },
   components: {

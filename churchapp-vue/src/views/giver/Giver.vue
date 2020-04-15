@@ -41,7 +41,7 @@ import dialogMessage from "../../shared/DialogMessage";
 export default {
   name: "giver",
   created() {
-    this.$store.dispatch("getGivers", {
+    this.$store.dispatch("giver/getGivers", {
       includeAddress: false,
       includeDonations: false
     });
@@ -49,10 +49,10 @@ export default {
   components: { snackBar, dialogMessage },
   computed: {
     givers() {
-      return this.$store.state.givers;
+      return this.$store.state.giver.givers;
     },
     isLoggedIn() {
-      return this.$store.state.currentUser !== null;
+      return this.$store.state.account.currentUser !== null;
     }
   },
   data() {
@@ -103,12 +103,12 @@ export default {
     confirmEvent(val) {
       if (val && this.personToDelete) {
         this.$store
-          .dispatch("deleteGiver", this.personToDelete.id)
+          .dispatch("giver/deleteGiver", this.personToDelete.id)
           .then(res => {
             this.message = "You have successfully deleted this person.";
             this.color = "success";
             this.show = true;
-            this.$store.dispatch("getGivers", {
+            this.$store.dispatch("giver/getGivers", {
               includeAddress: false,
               includeDonations: false
             });

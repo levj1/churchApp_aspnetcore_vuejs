@@ -82,7 +82,7 @@ export default {
   mixins: [utilityMixin],
   created() {
     this.$store
-      .dispatch("getGivers", {
+      .dispatch("giver/getGivers", {
         includeAddress: false,
         includeDonations: false
       })
@@ -92,7 +92,7 @@ export default {
       });
 
     this.$store
-      .dispatch("getDonationTypes")
+      .dispatch("donationType/getDonationTypes")
       .then()
       .catch(err => {
         console.log("An error occured while loading donation types");
@@ -103,10 +103,10 @@ export default {
   },
   computed: {
     people() {
-      return this.$store.state.givers;
+      return this.$store.state.giver.givers;
     },
     donationTypes() {
-      return this.$store.state.donationTypes;
+      return this.$store.state.donationType.donationTypes;
     }
   },
   data: () => ({
@@ -139,7 +139,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         this.$store
-          .dispatch("createDonations", JSON.stringify(this.donations))
+          .dispatch("donation/createDonations", JSON.stringify(this.donations))
           .then(res => {
             this.donations = don;
             this.$router.push("/donations");

@@ -67,7 +67,7 @@ export default {
   mixins: [utilityMixin],
   created() {
     this.$store
-      .dispatch("getDonations")
+      .dispatch("donation/getDonations")
       .then(res => {
         this.donations = res.data;
         this.sortDataForGraph();
@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return this.$store.state.currentUser !== null;
+      return this.$store.state.account.currentUser !== null;
     },
     getTypes() {
       return ["Tithe", "Offering", "Pledge", "ReliefFund"];
@@ -149,7 +149,7 @@ export default {
       console.log(this.donationToDelete);
       if (val && this.donationToDelete) {
         this.$store
-          .dispatch("deleteDonation", this.donationToDelete.id)
+          .dispatch("donation/deleteDonation", this.donationToDelete.id)
           .then(res => {
             var index = this.donations.findIndex(
               x => x.id == this.donationToDelete.id

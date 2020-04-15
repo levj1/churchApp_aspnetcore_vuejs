@@ -44,13 +44,13 @@ export default {
   name: "EditDonation",
   created() {
     this.$store
-      .dispatch("getDonationTypes")
+      .dispatch("donationType/getDonationTypes")
       .then().catch();
 
     const { id } = this;
     if (+id > 0) {
       this.$store
-        .dispatch("getADonation", id, {
+        .dispatch("donation/getADonation", id, {
           includeAddress: false,
           includeDonations: false
         }).then(res => {
@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     getDonationTypes() {
-      return this.$store.state.donationTypes;
+      return this.$store.state.donationType.donationTypes;
     }
   },
   data() {

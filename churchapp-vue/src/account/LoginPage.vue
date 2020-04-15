@@ -41,7 +41,7 @@ export default {
   created() {},
   computed: {
     getUser() {
-      return this.$store.state.currentUser;
+      return this.$store.state.account.currentUser;
     }
   },
   data: () => ({
@@ -62,7 +62,7 @@ export default {
     async login() {
       if (this.$refs.form.validate()) {
         await this.$store
-          .dispatch("login", this.user)
+          .dispatch("account/login", this.user)
           .then(res => {
             this.$router.push("/");
           })
