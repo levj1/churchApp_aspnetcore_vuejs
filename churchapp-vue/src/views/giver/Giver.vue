@@ -15,6 +15,12 @@
           <v-icon class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
           <v-icon @click="deletePerson(item)">mdi-delete</v-icon>
         </template>
+
+        <template v-slot:item.imageVal="{ }">
+          <v-avatar>
+            <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+          </v-avatar>
+        </template>
       </v-data-table>
 
       <snackBar
@@ -65,17 +71,12 @@ export default {
       message: "",
       search: "",
       headers: [
+        { text: "image", value: "imageVal", sortable: false },
         {
-          text: "First Name",
+          text: "Name",
           align: "left",
-          value: "firstName"
+          value: "fullName"
         },
-        {
-          text: "Last Name",
-          align: "left",
-          value: "lastName"
-        },
-
         { text: "Actions", value: "action", sortable: false }
       ],
       persons: [{ firstName: "", lastName: "", middleName: "", addresses: [] }]

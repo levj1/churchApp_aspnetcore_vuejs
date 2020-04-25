@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChurchAppAPI.Models
 {
@@ -14,6 +11,8 @@ namespace ChurchAppAPI.Models
 
         public DateTime DonationDate { get; set; }
 
+        public DateTime DateCreated { get; set; }
+
         public int DonationTypeId { get; set; }
 
         public int PersonID { get; set; }
@@ -24,5 +23,6 @@ namespace ChurchAppAPI.Models
         public bool IsCash { get; set; }
 
         public int MemberId { get; set; }
+        
     }
 }

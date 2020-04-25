@@ -21,6 +21,9 @@ namespace ChurchAppAPI.Models
 
         public string FullName {
             get {
+                if (string.IsNullOrEmpty(MiddleName))
+                    return $"{FirstName} {MiddleName} {LastName}";
+
                 return $"{FirstName} {LastName}";
             }
         }

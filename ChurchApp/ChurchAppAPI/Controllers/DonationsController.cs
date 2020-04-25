@@ -155,5 +155,14 @@ namespace ChurchAppAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("reports")]
+        public IActionResult GetReport(DateTime fromDate, DateTime toDate)
+        {
+            var donations = _donationRepository.GetAll().Where(d => d.DonationDate >= fromDate.Date
+            && d.DonationDate < toDate.AddDays(1).Date);
+     
+            return Ok();
+        }
     }
 }

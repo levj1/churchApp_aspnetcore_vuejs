@@ -20,5 +20,13 @@ namespace ChurchAppAPI.Entities
         public DbSet<AddressType> AddresseTypes { get; set; }
 
         public DbSet<DonationType> DonationTypes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Donation>()
+                .Property(b => b.DonationCreatedDate)
+                .HasDefaultValueSql("getdate()");
+        }
     }
 }

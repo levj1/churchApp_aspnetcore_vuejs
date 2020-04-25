@@ -16,41 +16,28 @@
         <v-btn text :to="{name: 'Register' }">Register</v-btn>
       </v-card-actions>
     </v-card>
-
-    <div>
-      <dialogMessage v-if="show"
-        v-bind:dialog.sync="show"
-        v-bind:message.sync="message"
-        v-on:dialogConfirmationEvent="confirmEvent"
-      ></dialogMessage>
-      <v-btn class="primary" @click="activate">Activate</v-btn>
-    </div>
+    <div></div>
   </div>
 </template>
 
 <script>
-import dialogMessage from "../shared/DialogMessage";
 export default {
   name: "welcome",
-  components: {
-    dialogMessage
-  },
+  components: {},
   mounted() {
     this.show = false;
   },
   data() {
     return {
+      testData: "",
       message: "This is a message from the parent component",
       show: false,
       color: "error"
     };
   },
   methods: {
-    activate() {
-      this.show = true;
-    },
-    confirmEvent(val) {
-      console.log("test " + val);
+    getTestData() {
+      alert(this.testDate);
     }
   }
 };

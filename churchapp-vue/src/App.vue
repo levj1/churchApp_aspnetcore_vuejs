@@ -13,7 +13,7 @@
       <router-link to="/giver" v-if="getUser">
         <v-btn text>Givers</v-btn>
       </router-link>
-      <router-link to="/donations" v-if="getUser">
+      <router-link to="/donation" v-if="getUser">
         <v-btn text>Donations</v-btn>
       </router-link>
       <div v-if="getUser">

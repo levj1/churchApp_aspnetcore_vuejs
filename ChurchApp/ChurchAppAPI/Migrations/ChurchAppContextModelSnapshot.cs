@@ -124,6 +124,10 @@ namespace ChurchAppAPI.Migrations
 
                     b.Property<decimal>("Amount");
 
+                    b.Property<DateTime>("DonationCreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("getdate()");
+
                     b.Property<DateTime>("DonationDate");
 
                     b.Property<int>("DonationTypeId");

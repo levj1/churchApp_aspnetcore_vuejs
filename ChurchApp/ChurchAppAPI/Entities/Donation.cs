@@ -19,6 +19,9 @@ namespace ChurchAppAPI.Entities
 
         public DateTime DonationDate { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime DonationCreatedDate { get; set; }
+
         public int DonationTypeId { get; set; }
 
         public DonationType DonationType { get; set; }

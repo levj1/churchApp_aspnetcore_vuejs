@@ -56,23 +56,37 @@ const routes = [
     name: 'Welcome',
     component: () => import('../welcome/WelcomePage.vue')
   },
+
   {
-    path: '/donations',
+    path: '/donation',
     name: 'Donation',
-    component: () => import('../views/donation/DonationList.vue')
-  },
-  {
-    path: '/adddonation',
-    name: 'AddDonation',
-    component: () => import('../views/donation/AddDonation.vue')
-  }, {
-    path: '/editdonation/:id',
-    name: 'EditDonation',
-    component: () => import('../views/donation/EditDonation.vue'),
-    props: (route) => ({
-      donation: {},
-      ...route.params
-  })
+    component: () => import('../views/donation/Donation.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Donation',
+        component: () => import('../views/donation/DonationList.vue')
+      },
+      {
+        path: 'add',
+        name: 'AddDonation',
+        component: () => import('../views/donation/AddDonation.vue')
+      }, 
+      {
+        path: 'edit/:id',
+        name: 'EditDonation',
+        component: () => import('../views/donation/EditDonation.vue'),
+        props: (route) => ({
+          donation: {},
+          ...route.params
+        }),
+      },
+      {
+        path: 'report',
+        name: 'DonationReport',
+        component: () => import('../views/donation/DonationReport.vue')
+      },
+    ]
   }
 ]
 
