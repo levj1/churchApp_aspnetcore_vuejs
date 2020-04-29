@@ -156,13 +156,33 @@ namespace ChurchAppAPI.Controllers
             return NoContent();
         }
 
-        [HttpGet("reports")]
-        public IActionResult GetReport(DateTime fromDate, DateTime toDate)
+        [HttpPost("reports")]
+        public IActionResult Post([FromBody] DonationReportDto report)
         {
-            var donations = _donationRepository.GetAll().Where(d => d.DonationDate >= fromDate.Date
-            && d.DonationDate < toDate.AddDays(1).Date);
+
+            var donations = _donationRepository.GetAll().Where(d => d.DonationDate >= report.StartDate.Date
+            && d.DonationDate < report.EndDate.AddDays(1).Date);
+
+            if (report.DonationTypeId > 0)
+            {
+                donations = donations.Where(x => x.DonationType.ID == report.DonationTypeId);
+            }
+            var donationDtos = _mapper.Map <List<DonationDto>>(donations);
      
-            return Ok();
+            return Ok(donationDtos);
+        }
+
+
+        async Task<IActionResult> DownloadFileAsync(string fileName)
+        {
+            using (var net = new System.Net.WebClient())
+            {
+                byte[] data = await net.DownloadDataTaskAsync(fileName);
+                return new FileContentResult(data, "application/pdf")
+                {
+                    FileDownloadName = "file_name_here.pdf"
+                };
+            }
         }
     }
 }

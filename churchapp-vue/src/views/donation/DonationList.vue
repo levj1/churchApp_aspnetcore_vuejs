@@ -66,15 +66,15 @@ export default {
   },
   mixins: [utilityMixin],
   created() {
-    this.$store
-      .dispatch("donation/getDonations")
-      .then(res => {
-        this.donations = res.data;
-        this.sortDataForGraph();
-      })
-      .catch(err => {
-        console.log("error while getter donations");
-      });
+      this.$store
+        .dispatch("donation/getDonations")
+        .then(res => {
+          this.donations = res.data;
+          this.sortDataForGraph();
+        })
+        .catch(err => {
+          console.log("error while getter donations");
+        });
   },
   computed: {
     isLoggedIn() {

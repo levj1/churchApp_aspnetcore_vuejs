@@ -23,6 +23,17 @@ export default {
                     }
                 });
         },
+        getDonationReport(context, payload){
+            return axios.post(process.env.VUE_APP_API + '/api/donations/reports',
+            payload
+            ,
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + this.state.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+        },
         createDonations(context, donations) {
             return axios.post(process.env.VUE_APP_API + '/api/donations/createDonations', donations,
                 {

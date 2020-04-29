@@ -14,8 +14,7 @@
           <template v-slot:activator="{ on }">
             <v-text-field
               v-model="dateFormatted"
-              label="Date"
-              hint="MM/DD/YYYY format"
+              :label="dateLabelLocal"
               persistent-hint
               prepend-icon="event"
               @blur="date = parseDate(dateFormatted)"
@@ -24,10 +23,6 @@
           </template>
           <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
         </v-menu>
-        <!-- <p>
-          Date in ISO format:
-          <strong>{{ date }}</strong>
-        </p> -->
       </v-col>
     </v-row>
   </v-container>
@@ -35,6 +30,10 @@
 <script>
 export default {
   props: {
+    dateLabel: {
+      type: String,
+      default: "Date"
+    },
     dateEntered: {
       type: String,
       default: new Date().toISOString().substr(0, 10)
@@ -43,21 +42,30 @@ export default {
   data: vm => ({
     date: new Date().toISOString().substr(0, 10),
     dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-    menu1: false
+    menu1: false,
+    dateLabelLocal: "Date"
   }),
   computed: {
     computedDateFormatted() {
       return this.formatDate(this.date);
     }
   },
+  mounted() {
+    this.dateLabelLocal = this.dateLabel;
+  },
 
   watch: {
     date(val) {
       this.dateFormatted = this.formatDate(this.date);
-      
+
       this.$emit("update:dateEntered", this.dateFormatted);
     },
-    
+    dateLabelLocal: function(nextVal) {
+      this.$emit("update:dateLabel", nextVal);
+    },
+    dateLabel: function(nextVal) {
+      this.dateLabelLocal = nextVal;
+    }
   },
 
   methods: {
